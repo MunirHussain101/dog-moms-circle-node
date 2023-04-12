@@ -10,25 +10,28 @@ exports.signup = async (req, res, next) => {
   // Save User to Database
   const transaction = await sequelize.transaction();
   try {
+    // const ab = req.body.roles
+    // const r = await Role.findAll({
+    //   where: {
+    //     name: {
+    //       [Op.or]: req.body.roles
+    //     }
+    //   }
+    // })
+    // return
     const [userExists, roles] = await Promise.all([
       User.findOne({
         where: {
-          [Op.or]: [
-            {
-              email: req.body.email,
-            },
-            // {username: req.body.username},
-          ],
+          email: req.body.email
         },
         transaction,
       }),
       Role.findAll({
         where: {
           name: {
-            [Op.or]: req.body.roles,
-          },
-        },
-        transaction,
+            [Op.or]: req.body.roles
+          }
+        }, transaction
       }),
     ]);
     if (
@@ -77,6 +80,7 @@ exports.signup = async (req, res, next) => {
       status: 201,
     });
   } catch (error) {
+    console.log(error)
     await transaction.rollback();
     next(error);
   }
@@ -124,6 +128,8 @@ exports.signin = async (req, res) => {
         expiresIn: 86400, // 24 hours
       }
     );
+    delete user.password
+    
     res.status(200).json({
       data: {
         user,

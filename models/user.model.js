@@ -24,7 +24,10 @@ module.exports =  (sequelize, Sequelize) => {
       },
       phone: {
         type: Sequelize.INTEGER,
-        
+      },
+      is_verified: {
+        type: Sequelize.BOOLEAN,
+        defaulValue: false
       }
     });
   
