@@ -1,24 +1,23 @@
-const {User, Role, Sequelize, UserRoles, sequelize} = require("../app/models");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
+const ApiError = require("../helpers/ApiError");
 const config = require("../app/config/auth.config");
+const Sequelize = require('sequelize')
+const sequelize = require('../utils/database')
+const User = require('../models/user');
+const Role = require("../models/role");
+const UserRole = require("../models/user-role");
+const Dog = require("../models/dog");
+const Breed = require("../models/breed");
+const UserDogs = require("../models/user-dogs");
+// const {User, Role, Sequelize, UserRoles, sequelize} = require("../app/models");
 
 const Op = Sequelize.Op;
 
-var jwt = require("jsonwebtoken");
-var bcrypt = require("bcryptjs");
-const ApiError = require("../helpers/ApiError");
 exports.signup = async (req, res, next) => {
   // Save User to Database
   const transaction = await sequelize.transaction();
   try {
-    // const ab = req.body.roles
-    // const r = await Role.findAll({
-    //   where: {
-    //     name: {
-    //       [Op.or]: req.body.roles
-    //     }
-    //   }
-    // })
-    // return
     const [userExists, roles] = await Promise.all([
       User.findOne({
         where: {
@@ -53,15 +52,31 @@ exports.signup = async (req, res, next) => {
         password,
         phone: req.body.phone,
         zipCode: req.body.zipCode,
+        is_verified: false
       },
       {
         transaction,
       }
     );
+    const breed = await Breed.findOne({where: {name: req.body.name}})
+    if(!breed) throw new Error('Breed not found')
 
+    const dog = await Dog.create({
+      name: req.body.dog.name,
+      date_of_birth: req.body.dog.birthday,
+      size: req.body.dog.size,
+      shedding_leve: req.body.dog.shedding,
+      house_trained: req.body.dog.house_trained,
+      can_be_left_alone: req.body.dog.can_be_left_alone,
+      spayed_neutered: req.body.dog.spayed_neutered,
+      good_with_cats: req.body.dog.good_with_cats,
+      other_dog_size_compatibility: req.body.dog.other_dog_size_compatibility,
+      breedId: breed.id
+    })
+    
     const userRoles = await Promise.all(
       roles.map(async (role) => {
-        return await UserRoles.create(
+        return await UserRole.create(
           {userId: user.id, roleId: role.id},
           {transaction}
         );
@@ -88,6 +103,7 @@ exports.signup = async (req, res, next) => {
 
 exports.signin = async (req, res) => {
   try {
+
     const user = await User.findOne({
       where: {
         email: req.body.email,
@@ -129,7 +145,7 @@ exports.signin = async (req, res) => {
       }
     );
     delete user.password
-    
+
     res.status(200).json({
       data: {
         user,

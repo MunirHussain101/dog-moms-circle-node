@@ -1,5 +1,6 @@
-const  { User, ROLES } = require("../app/models");
-
+// const  { User, ROLES } = require("../app/models");
+const User = require('../models/user')
+const Role = require('../models/role')
 const checkDuplicateUsernameOrEmail = (req, res, next) => {
   // use: try-catch and one query
   // Username
@@ -36,7 +37,7 @@ const checkDuplicateUsernameOrEmail = (req, res, next) => {
 const checkRolesExisted = (req, res, next) => {
   if (req.body.roles) {
     for (let i = 0; i < req.body.roles.length; i++) {
-      if (!ROLES.includes(req.body.roles[i])) {
+      if (!Role.includes(req.body.roles[i])) {
         res.status(400).send({
           message: "Failed! Role does not exist = " + req.body.roles[i]
         });

@@ -1,11 +1,12 @@
 
-const { User, Role, UserRoles } = require("../app/models");
-
+const User = require('../models/user')
+const Role = require('../models/role')
+const UserRole = require('../models/user-role')
 exports.allAccess = async (req, res, next) => {
     try {    // Find all users
     const users = await User.findAll({
       include: [{
-        model: UserRoles,
+        model: UserRole,
         include: [{
           model: Role
         }]

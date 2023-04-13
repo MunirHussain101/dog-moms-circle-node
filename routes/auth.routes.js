@@ -1,19 +1,29 @@
-const { verifySignUp } = require("../middlerware")
-const  controller = require("../controllers/auth.controller");
+const express = require('express')
+const UserRoles = require('../models/user-role')
 
-module.exports = function(app) {
-    app.use(function(req, res, next) {
-      res.header(
-        "Access-Control-Allow-Headers",
-        "x-access-token, Origin, Content-Type, Accept"
-      );
-      next();
-    });
+const { verifySignUp } = require("../middlerware")
+
+const  authController = require("../controllers/auth.controller");
+
+const router = express.Router();
+
+router.post('/api/auth/signup', authController.signup)
+router.post('/api/auth/signin', authController.signin)
+
+// module.exports = function(app) {
+//     app.use(function(req, res, next) {
+//       res.header(
+//         "Access-Control-Allow-Headers",
+//         "x-access-token, Origin, Content-Type, Accept"
+//       );
+//       next();
+//     });
   
-    app.post(
-      "/api/auth/signup",
-      controller.signup
-    );
+//     app.post(
+//       "/api/auth/signup",
+//       authController.signup
+//     );
   
-    app.post("/api/auth/signin", controller.signin);
-  };
+//     app.post("/api/auth/signin", controller.signin);
+//   };
+module.exports = router
