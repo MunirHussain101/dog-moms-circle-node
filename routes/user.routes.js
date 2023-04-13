@@ -4,6 +4,7 @@ const controller = require("../controllers/user.controller");
 
 const router = express.Router();
 
+router.post('/api/user/get-profile', controller.getProfileData)
 router.get('/api/test/all', controller.allAccess)
 
 module.exports = router
