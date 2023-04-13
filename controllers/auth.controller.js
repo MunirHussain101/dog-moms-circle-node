@@ -52,15 +52,23 @@ exports.signup = async (req, res, next) => {
         password,
         phone: req.body.phone,
         zipCode: req.body.zipCode,
-        is_verified: false
+        is_verified: false,
+        willing_travel_distance: req.body.willing_travel_distance,
+        activity_type: req.body.activity_type,
+        spay_neuter_prefs: req.body.spay_neuter_prefs,
+        shedding_prefs: req.body.shedding_prefs,
+        house_training_prefs: req.body.house_training_prefs,
+        have_a_cat: req.body.have_a_cat,
+        additional_notes: req.body.additional_notes,
+        profile_pic: req.body.profile_pic
       },
       {
         transaction,
       }
     );
-    const breed = await Breed.findOne({where: {name: req.body.name}})
+    const breed = await Breed.findOne({where: {name: req.body.dog.breed}})
     if(!breed) throw new Error('Breed not found')
-
+      const id = user.id
     const dog = await Dog.create({
       name: req.body.dog.name,
       date_of_birth: req.body.dog.birthday,
@@ -71,8 +79,9 @@ exports.signup = async (req, res, next) => {
       spayed_neutered: req.body.dog.spayed_neutered,
       good_with_cats: req.body.dog.good_with_cats,
       other_dog_size_compatibility: req.body.dog.other_dog_size_compatibility,
-      breedId: breed.id
-    })
+      breedId: breed.id,
+      userId: parseInt(user.id)
+    }, {transaction})
     
     const userRoles = await Promise.all(
       roles.map(async (role) => {
@@ -101,24 +110,24 @@ exports.signup = async (req, res, next) => {
   }
 };
 
-exports.signin = async (req, res) => {
+exports.signin = async (req, res, next) => {
   try {
-
-    const user = await User.findOne({
-      where: {
-        email: req.body.email,
-      },
-      include: [
-        {
-          model: UserRoles,
-          include: [
-            {
-              model: Role,
-            },
-          ],
-        },
-      ],
-    });
+    // const user = await User.findOne({
+    //   where: {
+    //     email: req.body.email,
+    //   },
+    //   include: [
+    //     {
+    //       model: UserRole,
+    //       include: [
+    //         {
+    //           model: Role,
+    //         },
+    //       ],
+    //     },
+    //   ],
+    // });
+    const user = await User.findOne({where: {email: req.body.email}, include: Role})
 
     if (!user) {
       throw new ApiError(404, "Email is not Valid");
@@ -138,7 +147,7 @@ exports.signin = async (req, res) => {
     }
 
     const token = jwt.sign(
-      {id: user.id, roleId: user.user_roles[0].roleId},
+      {id: user.id, roleId: user.roles[0].roleId},
       config.secret,
       {
         expiresIn: 86400, // 24 hours
@@ -156,6 +165,7 @@ exports.signin = async (req, res) => {
     });
   } catch (err) {
     console.log(err);
+    next(err);
   }
 };
 

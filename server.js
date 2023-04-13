@@ -12,7 +12,6 @@ const Role = require("./models/role");
 const User = require("./models/user");
 const Breed = require('./models/breed')
 const Dog = require('./models/dog')
-const UserDogs = require('./models/user-dogs')
 const app = express();
 // MiddleWare
 
@@ -25,11 +24,20 @@ app.use(cors());
 app.use(allowCors)
 // connectDB;
 
-User.hasMany(UserRole)
-Role.hasMany(UserRole)
+// User.hasMany(UserRole)
+// Role.hasMany(UserRole)
+User.belongsToMany(Role, {through: UserRole})
+Role.belongsToMany(User, {through: UserRole})
+
 Breed.hasMany(Dog)
-User.hasMany(UserDogs)
-Dog.hasMany(UserDogs)
+
+User.hasMany(Dog)
+Dog.belongsTo(User)
+
+
+// User.hasMany(UserDogs)
+// Dog.hasMany(UserDogs)
+
 // Dog.hasOne(Breed)  
 // User.belongsToMany(Role, {through: UserRole})
 // Role.belongsToMany(User, {through: UserRole})
@@ -77,8 +85,8 @@ app.use((err, req, res, next) => {
 });
 
 // {force: true}
-sequelize.sync({force: true}).then(result => {
-// sequelize.sync().then(result => {
+// sequelize.sync({force: true}).then(result => {
+sequelize.sync().then(result => {
   console.log('SYNCED')
   console.log(result)
   app.listen(process.env.PORT, () => {
