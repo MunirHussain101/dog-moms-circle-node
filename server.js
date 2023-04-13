@@ -21,8 +21,8 @@ const fileStorage = multer.diskStorage({
     cb(null, 'images')
   },
   filename: (req, file, cb) => {
-    console.log({fileYoo:file})
-    cb(null, new Date().getTime() + '-' + file.originalname);
+    const filename = file.originalname.split(' ').join('')
+    cb(null, new Date().getTime() + '-' + filename);
   }
 })
 const fileFilter = (req, file, cb) => {
@@ -40,7 +40,11 @@ const fileFilter = (req, file, cb) => {
 app.use(express.json());
 app.use(cors());
 app.use(allowCors)
-app.use(multer({storage: fileStorage, fileFilter}).single('image'))
+
+// app.use(multer({storage: fileStorage, fileFilter}).single('image'))
+
+app.use(multer({ storage: fileStorage, fileFilter }).array('image', 2), )
+
 app.use(express.static(path.join(__dirname, 'public')))
 app.use('/images', express.static(path.join(__dirname, 'images')))
 // connectDB;
