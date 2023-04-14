@@ -54,7 +54,7 @@ exports.signup = async (req, res, next) => {
         password,
         phone: req.body.phone,
         roleId: role.id,
-        tc_accepted: req.body.tc_accepted,
+        tc_accepted: req.body.tc_accepted || false,
         is_verified: false
       },
       {

@@ -80,7 +80,8 @@ app.use(userRoutes)
 // require("./routes/user.routes")(app);
 
 app.get("/", (req, res) => {
-  res.status(200).send("Hello World");
+  console.log('api hit')
+  res.status(200).json({dd: "Hello World"});
 });
 
 app.use((err, req, res, next) => {
@@ -123,7 +124,7 @@ Dog.belongsTo(User)
 // sequelize.sync({force: true}).then(result => {
 sequelize.sync().then(result => {
   console.log('SYNCED')
-  console.log(result)
+  // console.log(result)
   app.listen(process.env.PORT, () => {
     console.log(`Server is running at ${process.env.PORT}`);
   });
