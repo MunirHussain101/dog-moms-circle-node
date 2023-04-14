@@ -45,7 +45,7 @@ exports.signup = async (req, res, next) => {
       throw new ApiError(404, "User already exists");
     }
     const password = await bcrypt.hash(req.body.password, 10);
-    const role = await Role.findOne({name: 'User'})
+    const role = await Role.findOne({name: 'user'})
     const user = await User.create(
       {
         firstname: req.body.firstname,
@@ -54,6 +54,7 @@ exports.signup = async (req, res, next) => {
         password,
         phone: req.body.phone,
         roleId: role.id,
+        tc_accepted: req.body.tc_accepted,
         is_verified: false
       },
       {
@@ -62,7 +63,9 @@ exports.signup = async (req, res, next) => {
     );
     const userRole = await UserRole.create({
       userId: user.id,
-      roleId: role.id
+      roleId: role.id,
+      createdAt: new Date(),
+      updatedAt: new Date()
     }, {transaction})
     // const userRoles = await Promise.all(
     //   roles.map(async (role) => {
@@ -178,6 +181,7 @@ exports.setAdditionalData = async (req, res, next) => {
     }, {where: {id}}, {transaction})
 
     const breed = await Breed.findOne({where: {name: req.body.dog_breed}})
+    if(!breed) throw new Error('breed does not exist')
     const user = await User.findOne({where: {id: id}})
     const dog = await Dog.create({
       name: req.body.dog_name,
@@ -203,5 +207,3 @@ exports.setAdditionalData = async (req, res, next) => {
   }
   
 }
-
-

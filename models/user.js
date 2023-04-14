@@ -54,6 +54,10 @@ const User = sequelize.define('user', {
   have_a_cat: {
     type: Sequelize.ENUM('no', 'yes')
   },
+  tc_accepted: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: false
+  },
   additional_notes: {
     type: Sequelize.STRING
   },

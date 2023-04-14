@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize')
 const sequelize = require('../utils/database')
+const Breed = require('./breed')
 
 const Dog = sequelize.define('dog', {
     id: {
@@ -37,6 +38,19 @@ const Dog = sequelize.define('dog', {
     },
     profile_pic: {
         type: Sequelize.STRING
-    }
+    },
+    breedId: {
+        type: Sequelize.INTEGER,
+        references: {
+            model: Breed,
+            key: 'id',
+            allowNull: true,
+        }
+    },
 })
+
+Dog.associate = models => {
+    Dog.belongsTo(models.Breed);
+};
+
 module.exports = Dog

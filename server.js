@@ -84,23 +84,33 @@ app.get("/", (req, res) => {
 });
 
 app.use((err, req, res, next) => {
-  if (err instanceof ApiError) {
-    res
-      .status(err.status)
-      .json({
-        message: err.message,
-        status: err.status,
-        error: true,
-        data: null,
-      });
-  } else {
-    res.status(500).json({
-        message: 'Internal Server Error',
-        status: 500,
-        error: true,
-        data: null
-    })
-  }
+  res
+    .status(500)
+    .json({
+      message: err.message,
+      status: err.status,
+      error: true,
+      data: null,
+    });
+
+  // if (err instanceof ApiError) {
+  //   res
+  //     .status(err.status)
+  //     .json({
+  //       message: err.message,
+  //       status: err.status,
+  //       error: true,
+  //       data: null,
+  //     });
+  // } else {
+  //   res.status(500).json({
+  //       message: 'Internal Server Error',
+  //       status: 500,
+  //       error: true,
+  //       data: null
+  //   })
+  // }
+
 });
 User.belongsToMany(Role, {through: UserRole})
 Role.belongsToMany(User, {through: UserRole})
