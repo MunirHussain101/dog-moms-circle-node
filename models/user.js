@@ -25,7 +25,7 @@ const User = sequelize.define('user', {
     type: Sequelize.STRING(8),
   },
   phone: {
-    type: Sequelize.INTEGER,
+    type: Sequelize.STRING,
   },
   is_verified: {
     type: Sequelize.BOOLEAN,

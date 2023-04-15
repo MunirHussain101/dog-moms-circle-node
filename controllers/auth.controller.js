@@ -54,7 +54,7 @@ exports.signup = async (req, res, next) => {
         password,
         phone: req.body.phone,
         roleId: role.id,
-        tc_accepted: req.body.tc_accepted,
+        tc_accepted: req.body.tc_accepted || false,
         is_verified: false
       },
       {
@@ -164,8 +164,8 @@ exports.setAdditionalData = async (req, res, next) => {
     if(!images) throw new Error('Images undefined')
     if(images.length <= 1) throw new Error('Please select at least 2 images(1 for user 1 for dog)')
     
-    const profile_pic =  process.env.BASE_URL + '/images/' + images[0].filename
-    const dog_profile_pic =  process.env.BASE_URL + '/images/' + images[1].filename
+    const profile_pic =  process.env.IMAGE_BASE_URL + '/images/' + images[0].filename
+    const dog_profile_pic =  process.env.IMAGE_BASE_URL + '/images/' + images[1].filename
 
     const updatedUser = await User.update({
       zipCode: req.body.zipCode,

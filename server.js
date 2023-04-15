@@ -123,7 +123,6 @@ Dog.belongsTo(User)
 // sequelize.sync({force: true}).then(result => {
 sequelize.sync().then(result => {
   console.log('SYNCED')
-  console.log(result)
   app.listen(process.env.PORT, () => {
     console.log(`Server is running at ${process.env.PORT}`);
   });
