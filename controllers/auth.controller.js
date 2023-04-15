@@ -161,12 +161,11 @@ exports.setAdditionalData = async (req, res, next) => {
     const {id, email} = req.body
     if(!id) throw new Error('no user id provided')
     const images = req.files
-    
-    if(!images) throw new Error('Images undefined')
-    if(images.user_profile.length <= 0 || images.dog_profile.length <= 0) throw new Error('Please select at least 2 images(1 for user 1 for dog)')
+    // if(!images) throw new Error('Images undefined')
+    // if(images.user_profile.length <= 0 || images.dog_profile.length <= 0) throw new Error('Please select at least 2 images(1 for user 1 for dog)')
 
-    const profile_pic = process.env.IMAGE_BASE_URL + '/images/' + images.user_profile[0].filename
-    const dog_profile_pic =  process.env.IMAGE_BASE_URL + '/images/' + images.dog_profile[0].filename
+    // const profile_pic = process.env.IMAGE_BASE_URL + '/images/' + images.user_profile[0].filename
+    // const dog_profile_pic =  process.env.IMAGE_BASE_URL + '/images/' + images.dog_profile[0].filename
 
     const updatedUser = await User.update({
       zipCode: req.body.zipCode,
@@ -178,7 +177,7 @@ exports.setAdditionalData = async (req, res, next) => {
       dog_left_alone_prefs: req.body.dog_left_alone_prefs,
       have_a_cat: req.body.have_a_cat,
       additional_notes: req.body.additional_notes,
-      profile_pic,
+      profile_pic: '',
     }, {where: {id}}, {transaction})
 
     const breed = await Breed.findOne({where: {name: req.body.dog_breed}})
@@ -195,7 +194,7 @@ exports.setAdditionalData = async (req, res, next) => {
       spayed_neutered: req.body.dog_spayed_neutered,
       good_with_cats: req.body.dog_good_with_cats,
       other_dog_size_compatibility: req.body.dog_other_dog_size_compatibility,
-      profile_pic: dog_profile_pic,
+      profile_pic: 'dog_profile_pic',
       breedId: breed.dataValues.id,
       userId: parseInt(user.id)
     })
