@@ -42,8 +42,11 @@ app.use(cors());
 app.use(allowCors)
 
 // app.use(multer({storage: fileStorage, fileFilter}).single('image'))
+const upload = multer({ storage: fileStorage, fileFilter })
+const multipleUpload = upload.fields([{ name: 'user_profile', maxCount: 1}, {name: 'dog_profile', maxCount: 1}])
 
-app.use(multer({ storage: fileStorage, fileFilter }).array('image', 2), )
+// multer({ storage: fileStorage, fileFilter }).array('image', 2)
+app.use(multipleUpload)
 
 app.use(express.static(path.join(__dirname, 'public')))
 app.use('/images', express.static(path.join(__dirname, 'images')))
