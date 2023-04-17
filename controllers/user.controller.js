@@ -56,6 +56,16 @@ exports.getProfileData = async (req, res, next) => {
   }
 }
 
+exports.getUsers = async(req, res, next) => {
+  const users = await User.findAll()
+  const revised_users = []
+  users.forEach(user => {
+    const {password, ...revised_user} = user.dataValues
+    revised_users.push({...revised_user})
+  })
+  res.json(revised_users)
+}
+
   // exports.userBoard = (req, res) => {
   //   res.status(200).send("User Content.");
   // };
