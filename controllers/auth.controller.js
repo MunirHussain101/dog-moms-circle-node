@@ -178,7 +178,7 @@ exports.setAdditionalData = async (req, res, next) => {
       dog_left_alone_prefs: req.body.dog_left_alone_prefs,
       have_a_cat: req.body.have_a_cat,
       additional_notes: req.body.additional_notes,
-      profile_pic: 'abc',
+      profile_pic: req.body.user_profile,
     }, {where: {id}}, {transaction})
 
     const breed = await Breed.findOne({where: {name: req.body.dog_breed}})
@@ -195,7 +195,7 @@ exports.setAdditionalData = async (req, res, next) => {
       spayed_neutered: req.body.dog_spayed_neutered,
       good_with_cats: req.body.dog_good_with_cats,
       other_dog_size_compatibility: req.body.dog_other_dog_size_compatibility,
-      profile_pic: 'dog_profile_pic',
+      profile_pic: req.body.dog_profile,
       breedId: breed.dataValues.id,
       userId: parseInt(user.id)
     })
