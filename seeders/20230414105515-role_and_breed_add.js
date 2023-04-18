@@ -33,7 +33,6 @@ module.exports = {
       {name: 'bloodhound',createdAt: new Date(), updatedAt: new Date()},
       {name: 'border collie', createdAt: new Date(), updatedAt: new Date()},
       {name: 'border terrier', createdAt: new Date(), updatedAt: new Date()},
-      
       {name: 'borzol', createdAt: new Date(), updatedAt: new Date()},
       {name: 'boston terrier', createdAt: new Date(), updatedAt: new Date()},
       {name: 'bouvier des flandres', createdAt: new Date(), updatedAt: new Date()},
@@ -122,7 +121,7 @@ module.exports = {
       {name: 'pomeranian', createdAt: new Date(), updatedAt: new Date()},
       {name: 'poodle', createdAt: new Date(), updatedAt: new Date()},
       {name: 'portuguese water', createdAt: new Date(), updatedAt: new Date()},
-      {name: 'pug', createdAt: new Date(), updatedAt: new Date()},
+      // {name: 'pug', createdAt: new Date(), updatedAt: new Date()},
       {name: 'puli', createdAt: new Date(), updatedAt: new Date()},
       {name: 'rat terrier', createdAt: new Date(), updatedAt: new Date()},
       {name: 'rhodesian ridgeback', createdAt: new Date(), updatedAt: new Date()},
