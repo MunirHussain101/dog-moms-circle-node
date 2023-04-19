@@ -3,8 +3,9 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
+    await queryInterface.delete('breeds', [{}])
     await queryInterface.bulkInsert('breeds', [
-      {name: 'pug',createdAt: new Date(), updatedAt: new Date()},
+      // {name: 'pug',createdAt: new Date(), updatedAt: new Date()},
       {name: 'afghan hound',createdAt: new Date(), updatedAt: new Date()},
       {name: 'airedale terrier',createdAt: new Date(), updatedAt: new Date()},
       {name: 'akita',createdAt: new Date(), updatedAt: new Date()},
@@ -159,7 +160,7 @@ module.exports = {
       {name: 'wirehaired pointing griffon', createdAt: new Date(), updatedAt: new Date()},
       {name: 'yorkshire terrier', createdAt: new Date(), updatedAt: new Date()},
       {name: 'mixed or other', createdAt: new Date(), updatedAt: new Date()},
-   ])
+    ])
    await queryInterface.bulkInsert('roles', [
     {
       name: 'user',
