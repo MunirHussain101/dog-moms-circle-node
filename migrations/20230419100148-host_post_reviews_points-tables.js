@@ -101,7 +101,7 @@ module.exports = {
         autoIncrement: true,
         allowNull: false
       },
-      user_id: {
+      userId: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
@@ -136,7 +136,7 @@ module.exports = {
         allowNull: false,
         primaryKey: true
       },
-      user_id: {
+      userId: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
@@ -170,7 +170,7 @@ module.exports = {
         allowNull: true
       }
     })
-    await queryInterface.addConstraint('review-comments', {
+    await queryInterface.createTable('review-comments', {
       id: {
         type: Sequelize.INTEGER,
         autoIncrement: true,
@@ -211,9 +211,10 @@ module.exports = {
 
   async down (queryInterface, Sequelize) {
     await queryInterface.dropTable('hostings');
-    await queryInterface.dropTable('reviews');
     await queryInterface.dropTable('points');
     await queryInterface.dropTable('posts');
     await queryInterface.dropTable('review-comments');
+    await queryInterface.dropTable('reviews');
+
   }
 };

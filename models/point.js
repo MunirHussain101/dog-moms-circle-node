@@ -9,7 +9,7 @@ const Point = sequelize.define('point', {
         allowNull: false,
         primaryKey: true
     },
-    user_id: {
+    userId: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {

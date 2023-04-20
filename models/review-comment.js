@@ -38,3 +38,5 @@ const ReviewComments = sequelize.define('reviewComments', {
         allowNull: true
     }
 })
+
+module.exports = ReviewComments

@@ -9,7 +9,7 @@ const Post = sequelize.define('post', {
         allowNull: false,
         primaryKey: true
     },
-    user_id: {
+    userId: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
@@ -43,3 +43,5 @@ const Post = sequelize.define('post', {
         allowNull: true
     }
 })
+
+module.exports = Post;
