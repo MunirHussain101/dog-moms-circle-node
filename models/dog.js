@@ -49,8 +49,8 @@ const Dog = sequelize.define('dog', {
     },
 })
 
-Dog.associate = models => {
-    Dog.belongsTo(models.Breed);
-};
+// Dog.associate = models => {
+//     Dog.belongsTo(models.Breed);
+// };
 
 module.exports = Dog

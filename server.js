@@ -8,12 +8,13 @@ const ApiError = require("./helpers/ApiError");
 const sequelize = require('./utils/database');
 const allowCors = require("./middlerware/allowCors");
 
+// models
 const UserRole = require("./models/user-role");
 const Role = require("./models/role");
 const User = require("./models/user");
 const Breed = require('./models/breed')
 const Dog = require('./models/dog')
-
+const Hosting = require("./models/hosting");
 
 const app = express();
 const fileStorage = multer.diskStorage({
@@ -42,11 +43,11 @@ app.use(cors());
 app.use(allowCors)
 
 // app.use(multer({storage: fileStorage, fileFilter}).single('image'))
-const upload = multer({ storage: fileStorage, fileFilter })
-const multipleUpload = upload.fields([{ name: 'user_profile', maxCount: 1}, {name: 'dog_profile', maxCount: 1}])
+// const upload = multer({ storage: fileStorage, fileFilter })
+// const multipleUpload = upload.fields([{ name: 'user_profile', maxCount: 1}, {name: 'dog_profile', maxCount: 1}])
 
 // multer({ storage: fileStorage, fileFilter }).array('image', 2)
-app.use(multipleUpload)
+// app.use(multipleUpload)
 
 app.use(express.static(path.join(__dirname, 'public')))
 app.use('/images', express.static(path.join(__dirname, 'images')))
@@ -96,25 +97,6 @@ app.use((err, req, res, next) => {
       error: true,
       data: null,
     });
-
-  // if (err instanceof ApiError) {
-  //   res
-  //     .status(err.status)
-  //     .json({
-  //       message: err.message,
-  //       status: err.status,
-  //       error: true,
-  //       data: null,
-  //     });
-  // } else {
-  //   res.status(500).json({
-  //       message: 'Internal Server Error',
-  //       status: 500,
-  //       error: true,
-  //       data: null
-  //   })
-  // }
-
 });
 User.belongsToMany(Role, {through: UserRole})
 Role.belongsToMany(User, {through: UserRole})
@@ -123,7 +105,10 @@ Breed.hasMany(Dog)
 
 User.hasMany(Dog)
 Dog.belongsTo(User)
-// {force: true}
+
+Hosting.belongsTo(User, {as: 'hostedUser', foreignKey: 'hosted_user_id'})
+Hosting.belongsTo(User, {as: 'hostingUser', foreignKey: 'host_user_id'})
+
 // sequelize.sync({force: true}).then(result => {
 sequelize.sync().then(result => {
   console.log('SYNCED')

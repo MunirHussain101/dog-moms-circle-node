@@ -3,9 +3,9 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
-    await queryInterface.delete('breeds', [{}])
+    await queryInterface.bulkDelete('breeds', null, {})
     await queryInterface.bulkInsert('breeds', [
-      // {name: 'pug',createdAt: new Date(), updatedAt: new Date()},
+      {name: 'pug',createdAt: new Date(), updatedAt: new Date()},
       {name: 'afghan hound',createdAt: new Date(), updatedAt: new Date()},
       {name: 'airedale terrier',createdAt: new Date(), updatedAt: new Date()},
       {name: 'akita',createdAt: new Date(), updatedAt: new Date()},
@@ -122,7 +122,6 @@ module.exports = {
       {name: 'pomeranian', createdAt: new Date(), updatedAt: new Date()},
       {name: 'poodle', createdAt: new Date(), updatedAt: new Date()},
       {name: 'portuguese water', createdAt: new Date(), updatedAt: new Date()},
-      // {name: 'pug', createdAt: new Date(), updatedAt: new Date()},
       {name: 'puli', createdAt: new Date(), updatedAt: new Date()},
       {name: 'rat terrier', createdAt: new Date(), updatedAt: new Date()},
       {name: 'rhodesian ridgeback', createdAt: new Date(), updatedAt: new Date()},
@@ -161,30 +160,12 @@ module.exports = {
       {name: 'yorkshire terrier', createdAt: new Date(), updatedAt: new Date()},
       {name: 'mixed or other', createdAt: new Date(), updatedAt: new Date()},
     ])
-   await queryInterface.bulkInsert('roles', [
-    {
-      name: 'user',
-      createdAt: new Date(),
-      updatedAt: new Date()
-    },
-   ])
-    /**
-     * Add seed commands here.
-     *
-     * Example:
-     * await queryInterface.bulkInsert('People', [{
-     *   name: 'John Doe',
-     *   isBetaMember: false
-     * }], {});
-    */
+
+   await queryInterface.bulkInsert('roles', [{name: 'user', createdAt: new Date(),updatedAt: new Date()}])
   },
 
   async down (queryInterface, Sequelize) {
-    /**
-     * Add commands to revert seed here.
-     *
-     * Example:
-     * await queryInterface.bulkDelete('People', null, {});
-     */
+    await queryInterface.bulkDelete('breeds', null, {})
+    await queryInterface.bulkDelete('roles', null, {})
   }
 };
