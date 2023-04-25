@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../utils/database');
 
-const ReviewComments = sequelize.define('reviewComments', {
+const ReviewComments = sequelize.define('review_comments', {
     id: {
         type: Sequelize.INTEGER,
         autoIncrement: true,

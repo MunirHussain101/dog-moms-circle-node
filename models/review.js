@@ -38,9 +38,17 @@ const Review = sequelize.define('review', {
         allowNull: false,
         defaultValue: true
     },
-    dated: {
+    createdAt: {
         type: Sequelize.DATE,
         allowNull: false
+    },
+    updatedAt: {
+        type: Sequelize.DATE,
+        allowNull: false
+    },
+    deletedAt: {
+        type: Sequelize.DATE,
+        allowNull: true
     }
 })
 

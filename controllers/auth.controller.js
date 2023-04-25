@@ -44,7 +44,7 @@ exports.signup = async (req, res, next) => {
     //   throw new ApiError(400, "Roles not Found");
     // }
     if (userExists) {
-      throw new ApiError(404, "User already exists");
+      throw new ApiError(404, "Email already exists");
     }
     const password = await bcrypt.hash(req.body.password, 10);
     const role = await Role.findOne({name: 'user'})

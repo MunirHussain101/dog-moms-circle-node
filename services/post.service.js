@@ -1,5 +1,6 @@
 const Point = require("../models/point")
 const Post = require("../models/post")
+const Review = require("../models/review")
 const User = require("../models/user")
 
 const getPosts = async() => {
@@ -7,18 +8,13 @@ const getPosts = async() => {
         {
             model: User,
             include: Point
-        }
+        },
     ]})
+    // posts.dataValues.reviews = []
+    // const reviews = await Review.findAll({where: {
+    //     target_id: posts
+    // }})
     if(!posts) throw new Error("No posts found")
-
-    // const users = await User.findAll()
-    // if(!users) throw new Error("No users found")
-    
-    // posts.forEach(post => {
-    //     const user = users.find(user => user.id === post.user_id)
-    //     // post.user = user
-    //     post.temp = '=========>>>>>>'
-    // })
     return posts
 }
 
@@ -34,8 +30,6 @@ const createPost = async({user_id, start_date, end_date, is_live}) => {
     })
     return post
 }
-
-
 
 module.exports = {
     getPosts,

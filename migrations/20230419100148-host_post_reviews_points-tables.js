@@ -89,9 +89,17 @@ module.exports = {
         allowNull: false,
         defaultValue: true
       },
-      dated: {
+      createdAt: {
         type: Sequelize.DATE,
         allowNull: false
+      },
+      updatedAt: {
+          type: Sequelize.DATE,
+          allowNull: false
+      },
+      deletedAt: {
+          type: Sequelize.DATE,
+          allowNull: true
       }
     })
     await queryInterface.createTable('points', {
@@ -170,7 +178,7 @@ module.exports = {
         allowNull: true
       }
     })
-    await queryInterface.createTable('review-comments', {
+    await queryInterface.createTable('review_comments', {
       id: {
         type: Sequelize.INTEGER,
         autoIncrement: true,
@@ -213,7 +221,7 @@ module.exports = {
     await queryInterface.dropTable('hostings');
     await queryInterface.dropTable('points');
     await queryInterface.dropTable('posts');
-    await queryInterface.dropTable('review-comments');
+    await queryInterface.dropTable('review_comments');
     await queryInterface.dropTable('reviews');
 
   }

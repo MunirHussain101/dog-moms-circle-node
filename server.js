@@ -42,9 +42,11 @@ app.use('/images', express.static(path.join(__dirname, 'images')))
 const authRoutes = require('./routes/auth.routes');
 const userRoutes = require('./routes/user.routes');
 const postRoutes = require('./routes/post.routes');
+const reviewRoutes = require('./routes/review.routes')
 app.use(authRoutes)
 app.use(userRoutes)
 app.use(postRoutes)
+app.use(reviewRoutes)
 
 app.get("/", (req, res) => {
   console.log('api hit')
