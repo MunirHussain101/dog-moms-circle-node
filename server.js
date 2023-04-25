@@ -11,8 +11,10 @@ const allowCors = require("./middlerware/allowCors");
 const app = express();
 
 app.use(express.json());
+app.use(express.urlencoded({extended: true}))
 app.use(cors());
 app.use(allowCors)
+app.use(multer().none())
 
 
 app.use(express.static(path.join(__dirname, 'public')))

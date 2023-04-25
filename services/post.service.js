@@ -10,10 +10,11 @@ const getPosts = async() => {
         {
             model: User,
             where: {is_verified: true},
-            attributes: { include: ['id', 'firstname', 'lastname', 'zipCode'] },
-            include: { model: Review, as: 'reviews', where: { is_live: true } }
+            attributes: ['id', 'firstname', 'lastname', 'zipCode'],
+            include: { model: Review, as: 'reviews', where: { is_live: true }, required: false }
         },
-    ]})
+    ]
+    })
     if(!posts) throw new Error("No posts found")
     return posts
 }
