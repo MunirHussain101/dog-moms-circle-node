@@ -4,23 +4,25 @@ const Review = require("../models/review")
 const User = require("../models/user")
 
 const getPosts = async() => {
-    const posts = await Post.findAll({include: [
+    const posts = await Post.findAll({where: {
+        is_live: true
+    } , include: [
         {
             model: User,
-            include: Point
+            where: {is_verified: true},
+            attributes: { include: ['id', 'firstname', 'lastname', 'zipCode'] },
+            include: { model: Review, as: 'reviews', where: { is_live: true } }
         },
     ]})
-    // posts.dataValues.reviews = []
-    // const reviews = await Review.findAll({where: {
-    //     target_id: posts
-    // }})
     if(!posts) throw new Error("No posts found")
     return posts
 }
 
-const createPost = async({user_id, start_date, end_date, is_live}) => {
+const createPost = async({user_id, additional_info, start_date, end_date, is_live}) => {
+    // const user = await User.findOne({})
     const post = await Post.create({
         userId: user_id,
+        additional_info,
         start_date,
         end_date,
         is_live,

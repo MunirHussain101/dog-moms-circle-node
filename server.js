@@ -90,7 +90,7 @@ User.hasMany(Hosting)
 
 Review.belongsTo(User, {as: 'reviewUser', foreignKey: 'source_id'})
 Review.belongsTo(User, {as: 'reviewedUser', foreignKey: 'target_id'})
-User.hasMany(Review)
+User.hasMany(Review, {as: 'reviews', foreignKey: 'target_id'})
 
 // User.hasOne(Point)
 // Point.belongsTo(User)

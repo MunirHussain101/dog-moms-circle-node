@@ -152,6 +152,10 @@ module.exports = {
           key: 'id'
         }
       },
+      additional_info: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
       start_date: {
         type: Sequelize.DATE,
         allowNull: false
