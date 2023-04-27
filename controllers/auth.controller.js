@@ -19,21 +19,23 @@ exports.signup = async (req, res, next) => {
   // Save User to Database
   const transaction = await sequelize.transaction();
   try {
-    const [userExists] = await Promise.all([
-      User.findOne({
-        where: {
-          email: req.body.email
-        },
-        transaction,
-      }),
-      // Role.findAll({
-      //   where: {
-      //     name: {
-      //       [Op.or]: req.body.roles
-      //     }
-      //   }, transaction
-      // }),
-    ]);
+    const userExists = await User.findOne({where: {email: req.body.email}})
+
+    // const [userExists] = await Promise.all([
+    //   User.findOne({
+    //     where: {
+    //       email: req.body.email
+    //     },
+    //     // transaction,
+    //   }),
+    //   // Role.findAll({
+    //   //   where: {
+    //   //     name: {
+    //   //       [Op.or]: req.body.roles
+    //   //     }
+    //   //   }, transaction
+    //   // }),
+    // ]);
     // if (
     //   !roles ||
     //   !Array.isArray(roles) ||
@@ -42,7 +44,7 @@ exports.signup = async (req, res, next) => {
     //   throw new ApiError(400, "Roles not Found");
     // }
     if (userExists) {
-      throw new ApiError(404, "User already exists");
+      throw new ApiError(404, "Email already exists");
     }
     const password = await bcrypt.hash(req.body.password, 10);
     const role = await Role.findOne({name: 'user'})
@@ -55,11 +57,9 @@ exports.signup = async (req, res, next) => {
         phone: req.body.phone,
         roleId: role.id,
         tc_accepted: req.body.tc_accepted || false,
-        is_verified: false
+        is_verified: true
       },
-      {
-        transaction,
-      }
+      { transaction }
     );
     const userRole = await UserRole.create({
       userId: user.id,
@@ -67,14 +67,6 @@ exports.signup = async (req, res, next) => {
       createdAt: new Date(),
       updatedAt: new Date()
     }, {transaction})
-    // const userRoles = await Promise.all(
-    //   roles.map(async (role) => {
-    //     return await UserRole.create(
-    //       {userId: user.id, roleId: role.id},
-    //       {transaction}
-    //     );
-    //   })
-    // );
 
     await transaction.commit();
 

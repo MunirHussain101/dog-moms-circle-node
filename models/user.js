@@ -65,4 +65,5 @@ const User = sequelize.define('user', {
     type: Sequelize.STRING
   }
 })
+
 module.exports = User

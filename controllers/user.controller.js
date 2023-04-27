@@ -5,6 +5,8 @@ const UserRole = require('../models/user-role');
 const Dog = require('../models/dog');
 const Breed = require('../models/breed');
 
+const postService = require('../services/post.service');
+
 exports.allAccess = async (req, res, next) => {
     try {    // Find all users
     const users = await User.findAll({
@@ -57,23 +59,16 @@ exports.getProfileData = async (req, res, next) => {
 }
 
 exports.getUsers = async(req, res, next) => {
-  const users = await User.findAll()
-  const revised_users = []
-  users.forEach(user => {
-    const {password, ...revised_user} = user.dataValues
-    revised_users.push({...revised_user})
-  })
-  res.json(revised_users)
+  try {
+    const users = await User.findAll()
+    const revised_users = []
+    users.forEach(user => {
+      const {password, ...revised_user} = user.dataValues
+      revised_users.push({...revised_user})
+    })
+    res.json(revised_users)
+  } catch(err) {
+    next(err)
+  }
 }
 
-  // exports.userBoard = (req, res) => {
-  //   res.status(200).send("User Content.");
-  // };
-  
-  // exports.adminBoard = (req, res) => {
-  //   res.status(200).send("Admin Content.");
-  // };
-  
-  // exports.moderatorBoard = (req, res) => {
-  //   res.status(200).send("Moderator Content.");
-  // };

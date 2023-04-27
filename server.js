@@ -8,45 +8,14 @@ const ApiError = require("./helpers/ApiError");
 const sequelize = require('./utils/database');
 const allowCors = require("./middlerware/allowCors");
 
-const UserRole = require("./models/user-role");
-const Role = require("./models/role");
-const User = require("./models/user");
-const Breed = require('./models/breed')
-const Dog = require('./models/dog')
-
-
 const app = express();
-const fileStorage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, 'images')
-  },
-  filename: (req, file, cb) => {
-    const filename = file.originalname.split(' ').join('')
-    cb(null, new Date().getTime() + '-' + filename);
-  }
-})
-const fileFilter = (req, file, cb) => {
-  if(
-    file.mimetype === 'image/png' ||
-    file.mimetype === 'image/jpg' ||
-    file.mimetype === 'image/jpeg'
-  ) {
-    cb(null, true)
-  } else {
-    return cb(null, false)
-  }
-}
 
 app.use(express.json());
+app.use(express.urlencoded({extended: true}))
 app.use(cors());
 app.use(allowCors)
+app.use(multer().none())
 
-// app.use(multer({storage: fileStorage, fileFilter}).single('image'))
-const upload = multer({ storage: fileStorage, fileFilter })
-const multipleUpload = upload.fields([{ name: 'user_profile', maxCount: 1}, {name: 'dog_profile', maxCount: 1}])
-
-// multer({ storage: fileStorage, fileFilter }).array('image', 2)
-app.use(multipleUpload)
 
 app.use(express.static(path.join(__dirname, 'public')))
 app.use('/images', express.static(path.join(__dirname, 'images')))
@@ -74,13 +43,12 @@ app.use('/images', express.static(path.join(__dirname, 'images')))
 // routes
 const authRoutes = require('./routes/auth.routes');
 const userRoutes = require('./routes/user.routes');
-
+const postRoutes = require('./routes/post.routes');
+const reviewRoutes = require('./routes/review.routes')
 app.use(authRoutes)
 app.use(userRoutes)
-
-// app.use()
-// require("./routes/auth.routes")(app);
-// require("./routes/user.routes")(app);
+app.use(postRoutes)
+app.use(reviewRoutes)
 
 app.get("/", (req, res) => {
   console.log('api hit')
@@ -96,26 +64,19 @@ app.use((err, req, res, next) => {
       error: true,
       data: null,
     });
-
-  // if (err instanceof ApiError) {
-  //   res
-  //     .status(err.status)
-  //     .json({
-  //       message: err.message,
-  //       status: err.status,
-  //       error: true,
-  //       data: null,
-  //     });
-  // } else {
-  //   res.status(500).json({
-  //       message: 'Internal Server Error',
-  //       status: 500,
-  //       error: true,
-  //       data: null
-  //   })
-  // }
-
 });
+// models
+const UserRole = require("./models/user-role");
+const Role = require("./models/role");
+const User = require("./models/user");
+const Breed = require('./models/breed')
+const Dog = require('./models/dog')
+const Hosting = require("./models/hosting");
+const Review = require("./models/review");
+const Post = require('./models/post');
+const Point = require("./models/point");
+const ReviewComments = require("./models/review-comment");
+
 User.belongsToMany(Role, {through: UserRole})
 Role.belongsToMany(User, {through: UserRole})
 
@@ -123,7 +84,31 @@ Breed.hasMany(Dog)
 
 User.hasMany(Dog)
 Dog.belongsTo(User)
-// {force: true}
+
+Hosting.belongsTo(User, {as: 'hostedUser', foreignKey: 'hosted_user_id'})
+Hosting.belongsTo(User, {as: 'hostingUser', foreignKey: 'host_user_id'})
+User.hasMany(Hosting)
+
+
+Review.belongsTo(User, {as: 'reviewUser', foreignKey: 'source_id'})
+Review.belongsTo(User, {as: 'reviewedUser', foreignKey: 'target_id'})
+User.hasMany(Review, {as: 'reviews', foreignKey: 'target_id'})
+
+// User.hasOne(Point)
+// Point.belongsTo(User)
+
+User.hasMany(Post)
+Post.belongsTo(User)
+User.hasOne(Point)
+Point.belongsTo(User)
+
+// Post.hasMany(Review)
+// Post.belongsTo(User)
+// Post.hasOne(User)
+
+Review.hasMany(ReviewComments)
+
+
 // sequelize.sync({force: true}).then(result => {
 sequelize.sync().then(result => {
   console.log('SYNCED')
