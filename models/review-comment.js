@@ -1,21 +1,29 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../utils/database');
 
-const ReviewComments = sequelize.define('review_comments', {
+const ReviewComment = sequelize.define('review_comment', {
     id: {
         type: Sequelize.INTEGER,
         autoIncrement: true,
         allowNull: false,
         primaryKey: true
     },
-    review_id: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        references: {
-            model: 'reviews',
-            key: 'id'
-        }
-    },
+    // review_id: {
+    //     type: Sequelize.INTEGER,
+    //     allowNull: false,
+    //     references: {
+    //         model: 'reviews',
+    //         key: 'id'
+    //     }
+    // },
+    // user_id: {
+    //     type: Sequelize.INTEGER,
+    //     allowNull: false,
+    //     references: {
+    //         model: 'users',
+    //         key: 'id'
+    //     }
+    // },
     comment: {
         type: Sequelize.STRING,
         allowNull: false
@@ -39,4 +47,4 @@ const ReviewComments = sequelize.define('review_comments', {
     }
 })
 
-module.exports = ReviewComments
+module.exports = ReviewComment

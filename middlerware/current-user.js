@@ -1,0 +1,16 @@
+const jwt = require('jsonwebtoken');
+const User = require('../models/user');
+const config = require('../app/config/auth.config')
+
+exports.setCurrentUser = async (req, res, next) => {
+    const authHeader = req.headers['authorization']
+    const token = authHeader && authHeader.split(' ')[1];
+
+    // if(!token) throw new Error('Token not defined in header')
+    if(token) {
+        const {id} = await jwt.verify(token, config.secret)
+        const user = await User.findOne({id})
+        req.user = user
+    }
+    next()
+}
