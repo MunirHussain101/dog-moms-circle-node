@@ -20,12 +20,12 @@ const User = require("../models/user")
 //     return posts
 // }
 
-const setReviewComments = async({ reviewId: review_id, comment }) => {
+const setReviewComments = async(review_id, comment, user_id) => {
     
     const reviewComment = await ReviewComments.create({
         review_id,
         comment,
-        user_id: req.user.id,
+        user_id,
         is_live: true,
         created_at: new Date(),
         updated_at: new Date(),

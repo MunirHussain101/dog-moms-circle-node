@@ -33,7 +33,7 @@ exports.setReviewComments = async(req, res, next) => {
         if(!reviewId) throw new ApiError(404, "Review id not provided")
         if(!comment) throw new ApiError(404, "Comment not provided")
 
-        const result = reviewService.setReviewComments(reviewId, comment)
+        const result = await reviewService.setReviewComments(reviewId, comment, req.user.id)
         res.json(result)
     } catch(err) {
         next(err)
