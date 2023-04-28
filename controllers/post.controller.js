@@ -2,11 +2,13 @@ const jwt = require('jsonwebtoken')
 const config = require('../app/config/auth.config')
 
 const postService = require('../services/post.service')
+const userService = require('../services/user.service')
 
 exports.getPosts = async (req, res, next) => {
     try {
         const data = await postService.getPosts()
-        res.json(data)
+        const users = await userService.getUsers()
+        res.json({posts: data, allUsers: users})
     } catch (err) {
         next(err)
     }
