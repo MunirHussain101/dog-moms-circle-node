@@ -14,7 +14,7 @@ const getPosts = async() => {
         include: [{
             model: User,
             where: {is_verified: true},
-            attributes: ['id', 'firstname', 'lastname', 'zipCode'],
+            attributes: ['id', 'firstname', 'lastname', 'zipCode', 'profile_pic'],
             include: [
                 {
                     model: Review,

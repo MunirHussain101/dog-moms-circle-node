@@ -6,7 +6,7 @@ const User = require('../models/user')
 const getUsers = async() => {
     const users = await User.findAll({
         where: {is_verified: true},
-        attributes: ['id', 'firstname', 'lastname', 'zipCode'],
+        attributes: ['id', 'firstname', 'lastname', 'zipCode', 'profile_pic'],
         include: [
             {
                 model: Review,
