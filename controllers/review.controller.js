@@ -2,6 +2,8 @@ const jwt = require('jsonwebtoken')
 
 const userService = require('../services/user.service')
 const config = require("../app/config/auth.config");
+const ApiError = require('../helpers/ApiError');
+const reviewService = require('../services/review.service')
 
 exports.setReview = async (req, res, next) => {
     try {
@@ -19,6 +21,20 @@ exports.setReview = async (req, res, next) => {
         const response = await userService.setReview(sourceId, targetId, rating, review)
         res.json(response)
 
+    } catch(err) {
+        next(err)
+    }
+}
+
+exports.setReviewComments = async(req, res, next) => {
+    try {
+        const {reviewId, comment} = req.body
+        
+        if(!reviewId) throw new ApiError(404, "Review id not provided")
+        if(!comment) throw new ApiError(404, "Comment not provided")
+
+        const result = await reviewService.setReviewComments(reviewId, comment, req.user.id)
+        res.json(result)
     } catch(err) {
         next(err)
     }

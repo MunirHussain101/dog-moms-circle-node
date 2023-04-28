@@ -6,7 +6,8 @@ const router = express.Router();
 
 router.post('/api/user/get-profile', controller.getProfileData)
 router.get('/api/users', controller.getUsers)
-router.get('/api/test/all', controller.allAccess)
+router.get('/api/breeds', controller.getBreeds)
+// router.get('/api/test/all', controller.allAccess)
 
 module.exports = router
 

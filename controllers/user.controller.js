@@ -6,6 +6,7 @@ const Dog = require('../models/dog');
 const Breed = require('../models/breed');
 
 const postService = require('../services/post.service');
+const userService = require('../services/user.service')
 
 exports.allAccess = async (req, res, next) => {
     try {    // Find all users
@@ -72,3 +73,11 @@ exports.getUsers = async(req, res, next) => {
   }
 }
 
+exports.getBreeds = async(req, res, next) => {
+  try {
+    const breeds = await userService.getBreeds()
+    res.json(breeds)
+  } catch(err) {
+    next(err)
+  }
+}

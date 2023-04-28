@@ -7,6 +7,7 @@ const path = require('path')
 const ApiError = require("./helpers/ApiError");
 const sequelize = require('./utils/database');
 const allowCors = require("./middlerware/allowCors");
+const {setCurrentUser} = require('./middlerware/current-user')
 
 const app = express();
 
@@ -15,6 +16,7 @@ app.use(express.urlencoded({extended: true}))
 app.use(cors());
 app.use(allowCors)
 app.use(multer().none())
+app.use(setCurrentUser);
 
 
 app.use(express.static(path.join(__dirname, 'public')))
@@ -106,8 +108,10 @@ Point.belongsTo(User)
 // Post.belongsTo(User)
 // Post.hasOne(User)
 
-Review.hasMany(ReviewComments)
-
+Review.hasMany(ReviewComments, {foreignKey: 'review_id'})
+ReviewComments.belongsTo(Review, {as: 'comments', foreignKey: 'review_id', targetKey: 'id'}) //
+User.hasMany(ReviewComments, {foreignKey: 'user_id'})
+ReviewComments.belongsTo(User, {as: 'review_comments', foreignKey: 'user_id', targetKey: 'id' })
 
 // sequelize.sync({force: true}).then(result => {
 sequelize.sync().then(result => {

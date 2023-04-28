@@ -10,6 +10,7 @@ const Role = require("../models/role");
 const UserRole = require("../models/user-role");
 const Dog = require("../models/dog");
 const Breed = require("../models/breed");
+const Point = require("../models/point");
 // const UserDogs = require("../models/user-dogs");
 // const {User, Role, Sequelize, UserRoles, sequelize} = require("../app/models");
 
@@ -67,7 +68,15 @@ exports.signup = async (req, res, next) => {
       createdAt: new Date(),
       updatedAt: new Date()
     }, {transaction})
-
+    const point = await Point.create({
+      userId: user.id,
+      points: 100,
+      approved_type: 'host', /** IMPORTANT */
+      /** this approve type will be changed, have to think and ask why will it be changed and why is it in points table */
+      /** what is the intent of approve type being here */
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }, {transaction})
     await transaction.commit();
 
     res.status(201).json({
@@ -88,21 +97,6 @@ exports.signup = async (req, res, next) => {
 
 exports.signin = async (req, res, next) => {
   try {
-    // const user = await User.findOne({
-    //   where: {
-    //     email: req.body.email,
-    //   },
-    //   include: [
-    //     {
-    //       model: UserRole,
-    //       include: [
-    //         {
-    //           model: Role,
-    //         },
-    //       ],
-    //     },
-    //   ],
-    // });
     const user = await User.findOne({where: {email: req.body.email}, include: Role})
 
     if (!user) {
