@@ -168,9 +168,9 @@ exports.setAdditionalData = async (req, res, next) => {
     }, {where: {id}}, {transaction})
 
     const breed = await Breed.findOne({where: {name: req.body.dog_breed}})
-    if(!breed) throw new Error('breed does not exist')
+    if(!breed) throw new ApiError(404, 'breed does not exist')
     const user = await User.findOne({where: {id: id}})
-    if(!user)  throw new Error('user does not exist')
+    if(!user)  throw new ApiError(404, 'user does not exist')
     const dog = await Dog.create({
       name: req.body.dog_name,
       date_of_birth: req.body.dog_birthday,
