@@ -48,7 +48,7 @@ const getPosts = async() => {
     return posts
 }
 
-const createPost = async({user_id, additional_info, start_date, end_date, is_live}) => {
+const createPost = async({user_id, start_date, end_date, is_live}) => {
     const postExists = await Post.findOne({
         where: {
             userId: user_id,
@@ -59,7 +59,7 @@ const createPost = async({user_id, additional_info, start_date, end_date, is_liv
     if(postExists) throw new ApiError(409, "You already have a live post")
     const post = await Post.create({
         userId: user_id,
-        additional_info,
+        // additional_info,
         start_date,
         end_date,
         is_live,
