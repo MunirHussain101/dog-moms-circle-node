@@ -19,7 +19,7 @@ const Post = sequelize.define('post', {
     },
     additional_info: {
         type: Sequelize.STRING,
-        allowNull: false,
+        // allowNull: false,
     },
     start_date: {
         type: Sequelize.DATE,
