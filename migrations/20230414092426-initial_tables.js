@@ -42,7 +42,7 @@ module.exports = {
       },
     
       activity_type: {
-        type: Sequelize.ENUM('boarding', 'daycare', 'playdate')
+        type: Sequelize.ARRAY(Sequelize.ENUM('boarding', 'daycare', 'playdate'))
       },
       spay_neuter_prefes: {
         type: Sequelize.ENUM('no preference', 'prefer fixed dog')
@@ -137,34 +137,34 @@ module.exports = {
         primaryKey: true
       },
       name: {
-          type: Sequelize.STRING,
+        type: Sequelize.STRING,
       },
       date_of_birth: {
-          type: Sequelize.DATE
+        type: Sequelize.DATE
       },
       size: {
-          type: Sequelize.ENUM('0-15lbs', '16-40lbs', '41-100lbs', '100+lbs')
+        type: Sequelize.ENUM('0-15lbs', '16-40lbs', '41-100lbs', '100+lbs')
       },    
       shedding_level: {
-          type: Sequelize.ENUM('no shedding', 'moderate', 'alot')
+        type: Sequelize.ENUM('no shedding', 'moderate', 'alot')
       },
       house_trained: {
-          type: Sequelize.ENUM('yes', 'work in progress', 'no')
+        type: Sequelize.ENUM('yes', 'work in progress', 'no')
       },
       can_be_left_alone: {
-          type: Sequelize.ENUM('no', 'couple hours', 'a few hours')
+        type: Sequelize.ENUM('no', 'couple hours', 'a few hours')
       },
       spayed_neutered: {
-          type: Sequelize.ENUM('no', 'yes')
+        type: Sequelize.ENUM('no', 'yes')
       },
       good_with_cats: {
-          type: Sequelize.ENUM('no', 'yes', 'unsure')
+        type: Sequelize.ENUM('no', 'yes', 'unsure')
       },
       other_dog_size_compatibility: {
-          type: Sequelize.ENUM('0-15lbs', '16-40lbs', '41-100lbs', '100+lbs')
+        type: Sequelize.ARRAY(Sequelize.ENUM('0-15lbs', '16-40lbs', '41-100lbs', '100+lbs'))
       },
       profile_pic: {
-          type: Sequelize.STRING
+        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,

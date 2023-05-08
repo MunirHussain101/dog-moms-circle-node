@@ -79,10 +79,19 @@ exports.signup = async (req, res, next) => {
     }, {transaction})
     await transaction.commit();
 
+    const token = jwt.sign(
+      {id: user.id,},
+      config.secret,
+      {
+        expiresIn: 86400, // 24 hours
+      }
+    );
+    const {password: pass, ...revised_user} = user.dataValues
     res.status(201).json({
       data: {
-        ...user.dataValues,
+        ...revised_user,
         roles: userRole,
+        token,
       },
       message: "User Registered Successfully",
       error: false,
@@ -123,11 +132,10 @@ exports.signin = async (req, res, next) => {
         expiresIn: 86400, // 24 hours
       }
     );
-    delete user.password
-
+    const {password,...revised_user} = user.dataValues
     res.status(200).json({
       data: {
-        user,
+        user:revised_user,
         token,
       },
       message: "Login Successful",
@@ -154,10 +162,11 @@ exports.setAdditionalData = async (req, res, next) => {
     // const profile_pic = process.env.IMAGE_BASE_URL + '/images/' + images.user_profile[0].filename
     // const dog_profile_pic =  process.env.IMAGE_BASE_URL + '/images/' + images.dog_profile[0].filename
 
+    const acitvity_arr = req.body.activity_type.split(',')
     const updatedUser = await User.update({
       zipCode: req.body.zipCode,
       willing_travel_distance: req.body.willing_travel_distance,
-      activity_type: req.body.activity_type,
+      activity_type: acitvity_arr,
       spay_neuter_prefs: req.body.spay_neuter_prefs,
       shedding_prefs: req.body.shedding_prefs,
       house_training_prefs: req.body.house_training_prefs,
@@ -171,6 +180,7 @@ exports.setAdditionalData = async (req, res, next) => {
     if(!breed) throw new ApiError(404, 'breed does not exist')
     const user = await User.findOne({where: {id: id}})
     if(!user)  throw new ApiError(404, 'user does not exist')
+    const compat_arr = req.body.dog_other_dog_size_compatibility ? req.body.dog_other_dog_size_compatibility.split(','): null
     const dog = await Dog.create({
       name: req.body.dog_name,
       date_of_birth: req.body.dog_birthday,
@@ -180,7 +190,7 @@ exports.setAdditionalData = async (req, res, next) => {
       can_be_left_alone: req.body.dog_can_be_left_alone,
       spayed_neutered: req.body.dog_spayed_neutered,
       good_with_cats: req.body.dog_good_with_cats,
-      other_dog_size_compatibility: req.body.dog_other_dog_size_compatibility,
+      other_dog_size_compatibility: compat_arr,
       profile_pic: req.body.dog_profile,
       breedId: breed.dataValues.id,
       userId: parseInt(user.id)

@@ -37,7 +37,7 @@ const User = sequelize.define('user', {
   },
 
   activity_type: {
-    type: Sequelize.ENUM('boarding', 'daycare', 'playdate')
+    type: Sequelize.ARRAY(Sequelize.ENUM('boarding', 'daycare', 'playdate'))
   },
   spay_neuter_prefes: {
     type: Sequelize.ENUM('no preference', 'prefer fixed dog')
