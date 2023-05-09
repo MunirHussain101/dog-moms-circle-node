@@ -155,13 +155,6 @@ exports.setAdditionalData = async (req, res, next) => {
     const {id, email} = req.body
     if(!id) throw new Error('no user id provided')
 
-    // const images = req.files
-    // if(!images) throw new Error('Images undefined')
-    // if(images.user_profile.length <= 0 || images.dog_profile.length <= 0) throw new Error('Please select at least 2 images(1 for user 1 for dog)')
-
-    // const profile_pic = process.env.IMAGE_BASE_URL + '/images/' + images.user_profile[0].filename
-    // const dog_profile_pic =  process.env.IMAGE_BASE_URL + '/images/' + images.dog_profile[0].filename
-
     const acitvity_arr = req.body.activity_type.split(',')
     const updatedUser = await User.update({
       zipCode: req.body.zipCode,

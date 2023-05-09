@@ -35,10 +35,9 @@ const Dog = sequelize.define('dog', {
     },
     other_dog_size_compatibility: {
         type: Sequelize.ARRAY(Sequelize.ENUM('0-15lbs', '16-40lbs', '41-100lbs', '100+lbs'))
-        // type: Sequelize.ARRAY(Sequelize.ENUM('a','b'))
     },
     profile_pic: {
-        type: Sequelize.STRING
+        type: Sequelize.ARRAY(Sequelize.STRING)
     },
     breedId: {
         type: Sequelize.INTEGER,
