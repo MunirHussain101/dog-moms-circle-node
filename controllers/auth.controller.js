@@ -21,29 +21,6 @@ exports.signup = async (req, res, next) => {
   const transaction = await sequelize.transaction();
   try {
     const userExists = await User.findOne({where: {email: req.body.email}})
-
-    // const [userExists] = await Promise.all([
-    //   User.findOne({
-    //     where: {
-    //       email: req.body.email
-    //     },
-    //     // transaction,
-    //   }),
-    //   // Role.findAll({
-    //   //   where: {
-    //   //     name: {
-    //   //       [Op.or]: req.body.roles
-    //   //     }
-    //   //   }, transaction
-    //   // }),
-    // ]);
-    // if (
-    //   !roles ||
-    //   !Array.isArray(roles) ||
-    //   roles.length !== req.body.roles.length
-    // ) {
-    //   throw new ApiError(400, "Roles not Found");
-    // }
     if (userExists) {
       throw new ApiError(404, "Email already exists");
     }

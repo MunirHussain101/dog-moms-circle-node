@@ -5,7 +5,12 @@ const Post = require("../models/post")
 const Review = require("../models/review")
 const User = require("../models/user")
 
-const getPosts = async() => {
+const getPosts = async({zip_code, willing_travel_distance, time_period, dog_preferance}) => {
+    const userConditon = {is_verified: true}
+    // co
+    if(zip_code) userConditon.zipCode = zip_code
+    if(willing_travel_distance) userConditon.willing_travel_distance = willing_travel_distance
+    // if(time_period) userConditon
     const posts = await Post.findAll({
         where: {
             is_live: true,
@@ -13,7 +18,7 @@ const getPosts = async() => {
         },
         include: [{
             model: User,
-            where: {is_verified: true},
+            where: userConditon,
             attributes: ['id', 'firstname', 'lastname', 'zipCode', 'profile_pic'],
             include: [
                 {

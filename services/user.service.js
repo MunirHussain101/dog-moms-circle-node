@@ -3,9 +3,13 @@ const Point = require('../models/point')
 const Review = require('../models/review')
 const User = require('../models/user')
 
-const getUsers = async() => {
+const getUsers = async({ zip_code, willing_travel_distance, time_period, dog_preferance }) => {
+    const userConditon = {is_verified: true}
+    if(zip_code) userConditon.zipCode = zip_code
+    if(willing_travel_distance) userConditon.willing_travel_distance = willing_travel_distance
+
     const users = await User.findAll({
-        where: {is_verified: true},
+        where: userConditon,
         attributes: ['id', 'firstname', 'lastname', 'zipCode', 'profile_pic'],
         include: [
             {

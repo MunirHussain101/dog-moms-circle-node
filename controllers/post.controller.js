@@ -6,8 +6,9 @@ const userService = require('../services/user.service')
 
 exports.getPosts = async (req, res, next) => {
     try {
-        const data = await postService.getPosts()
-        const users = await userService.getUsers()
+        const { zip_code, willing_travel_distance, time_period, dog_preferance } = req.body
+        const data = await postService.getPosts({ zip_code, willing_travel_distance, time_period, dog_preferance })
+        const users = await userService.getUsers({ zip_code, willing_travel_distance, time_period, dog_preferance })
         res.json({posts: data, allUsers: users})
     } catch (err) {
         next(err)
@@ -16,7 +17,7 @@ exports.getPosts = async (req, res, next) => {
 
 exports.createPost = async (req, res, next) => {
     try {
-        const { additional_info, start_date, end_date } = req.body
+        const { start_date, end_date } = req.body
         const authHeader = req.headers['authorization'];
         const token = authHeader && authHeader.split(' ')[1];
 
