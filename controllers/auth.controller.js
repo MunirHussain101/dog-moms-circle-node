@@ -137,7 +137,7 @@ exports.setAdditionalData = async (req, res, next) => {
       zipCode: req.body.zipCode,
       willing_travel_distance: req.body.willing_travel_distance,
       activity_type: acitvity_arr,
-      spay_neuter_prefs: req.body.spay_neuter_prefs,
+      spay_neuter_prefes: req.body.spay_neuter_prefs,
       shedding_prefs: req.body.shedding_prefs,
       house_training_prefs: req.body.house_training_prefs,
       dog_left_alone_prefs: req.body.dog_left_alone_prefs,
