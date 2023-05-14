@@ -31,8 +31,8 @@ exports.allAccess = async (req, res, next) => {
 
 exports.getProfileData = async (req, res, next) => {
   try {
-    const {id, token} = req.body
-    if(!id || !token) throw new Error('No id or token provided')
+    const {id} = req.body
+    if(!id) throw new Error('No id or token provided')
 
     const user = await User.findOne({
       where: {id},
@@ -61,6 +61,7 @@ exports.getProfileData = async (req, res, next) => {
 
 exports.getUsers = async(req, res, next) => {
   try {
+    const token = req.header
     const users = await User.findAll()
     const revised_users = []
     users.forEach(user => {
