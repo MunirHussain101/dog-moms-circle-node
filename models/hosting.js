@@ -30,6 +30,11 @@ const Hosting = sequelize.define('user', {
         }
 
     },
+    is_accepted : {
+        type : Sequelize.BOOLEAN,
+        allowNull : false,
+        defaultValue : false,
+    },
     host_user_id: {
         type: Sequelize.INTEGER,
         allowNull: false,

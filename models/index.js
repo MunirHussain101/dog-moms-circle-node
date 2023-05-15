@@ -7,7 +7,14 @@ const process = require('process');
 const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || 'development';
 const config = require(__dirname + '/../config/config.json')[env];
-const db = {};
+console.log({config})
+const dotenv = require("dotenv")
+if (config.use_env_variable) {
+  // dotenv.config({ path: path.resolve(__dirname, '../')  })
+}
+
+console.log()
+
 
 let sequelize;
 if (config.use_env_variable) {
