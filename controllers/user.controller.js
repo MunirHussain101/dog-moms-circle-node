@@ -4,9 +4,10 @@ const Role = require('../models/role')
 const UserRole = require('../models/user-role');
 const Dog = require('../models/dog');
 const Breed = require('../models/breed');
-
+ 
 const postService = require('../services/post.service');
-const userService = require('../services/user.service')
+const userService = require('../services/user.service');
+const { where } = require('sequelize');
 
 exports.allAccess = async (req, res, next) => {
     try {    // Find all users
@@ -78,6 +79,21 @@ exports.getBreeds = async(req, res, next) => {
     const breeds = await userService.getBreeds()
     res.json(breeds)
   } catch(err) {
+    next(err)
+  }
+}
+exports.getUser = async(req,res,next) => {
+  const id = req.parms.id
+  try{
+    const user = await User.findOne({
+      where : {
+        id : id
+      }
+    })
+    
+    res.status(200).json(user)
+  }
+  catch(e){
     next(err)
   }
 }
