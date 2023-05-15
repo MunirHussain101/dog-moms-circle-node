@@ -24,6 +24,10 @@ module.exports = {
         type: Sequelize.DATE,
         allowNull: false
       },
+      is_accepted: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false
+      },
       hosted_user_id: {
         type: Sequelize.INTEGER,
         allowNull: false,

@@ -4,6 +4,7 @@ const userService = require('../services/user.service')
 const config = require("../app/config/auth.config");
 const ApiError = require('../helpers/ApiError');
 const reviewService = require('../services/review.service')
+const io = require('../socket')
 
 exports.setReview = async (req, res, next) => {
     try {
@@ -19,8 +20,9 @@ exports.setReview = async (req, res, next) => {
 
         const {id: sourceId} = await jwt.verify(token, config.secret)
         const response = await userService.setReview(sourceId, targetId, rating, review)
+        
+        io.getIO().emit("new-review", { targetId, rating, review }); // Emit the notification event
         res.json(response)
-
     } catch(err) {
         next(err)
     }

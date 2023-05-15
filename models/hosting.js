@@ -17,6 +17,10 @@ const Hosting = sequelize.define('user', {
         type: Sequelize.DATE,
         allowNull: false
     },
+    is_accepted: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false
+    },
     end_date: {
         type: Sequelize.DATE,
         allowNull: false

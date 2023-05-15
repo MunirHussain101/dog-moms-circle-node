@@ -3,6 +3,8 @@ require("dotenv").config();
 const cors = require("cors");
 const multer = require('multer')
 const path = require('path')
+const socketIO = require("socket.io");
+const http = require("http");
 
 const ApiError = require("./helpers/ApiError");
 const sequelize = require('./utils/database');
@@ -21,6 +23,7 @@ app.use(setCurrentUser);
 
 app.use(express.static(path.join(__dirname, 'public')))
 app.use('/images', express.static(path.join(__dirname, 'images')))
+
 // connectDB;
 
 // User.hasMany(UserRole)
@@ -116,7 +119,13 @@ ReviewComments.belongsTo(User, {as: 'review_comments', foreignKey: 'user_id', ta
 // sequelize.sync({force: true}).then(result => {
 sequelize.sync().then(result => {
   console.log('SYNCED')
-  app.listen(process.env.PORT, () => {
+  
+  const server = app.listen(process.env.PORT, () => {
     console.log(`Server is running at ${process.env.PORT}`);
   });
-}).catch(err => console.log(err)) 
+  const io = require('./socket')
+  io.init(server)
+  io.getIO().on('connection', socket => {
+    console.log('client connected')
+  })
+}).catch(err => console.log(err))
