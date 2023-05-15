@@ -90,7 +90,11 @@ exports.getUser = async(req,res,next) => {
         id : id
       }
     })
-    
+    if(!user){
+      res.status(404).json({
+        message : "not found"
+      })
+    }
     res.status(200).json(user)
   }
   catch(e){

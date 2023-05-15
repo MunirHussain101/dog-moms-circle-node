@@ -4,12 +4,18 @@ const { createHosting, getRequest } = require("../services/boarding.service")
 
 
 exports.createBoardingRequest = async(req,res,next) => {
-    let hosting = await createHosting(req.body);
-    await hosting.save();
-    res.status(200).json(await hosting.get())
+    try{
+        let hosting = await createHosting(req.body);
+        await hosting.save();
+        res.status(200).json(await hosting.get())
+    }
+    catch(e) {
+        next(e)
+    }
 }
 
 exports.approveBoardingRequest = async(req,res,next) => {
+    try{
     let {senderId, receiverId} = req.body;
 
     let hostingData = await getRequest(senderId,receiverId);
@@ -27,10 +33,15 @@ exports.approveBoardingRequest = async(req,res,next) => {
         })
     }
 
+}
+catch(e){
+    next(e)
+}
 
 }
 
 exports.deleteBoardingRequest = async(req,res,next) => {
+    try{
     let {senderId, receiverId} = req.body;
 
     let hostingData = await getRequest(senderId,receiverId);
@@ -49,5 +60,8 @@ exports.deleteBoardingRequest = async(req,res,next) => {
             data : await hostingData.get()
         })
     }
-
+    }
+    catch(e){
+        next(e)
+    }
 }

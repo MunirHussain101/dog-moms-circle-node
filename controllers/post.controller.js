@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken')
 const config = require('../app/config/auth.config')
+const Post = require('../models/post')
 
 const postService = require('../services/post.service')
 const userService = require('../services/user.service')
@@ -29,6 +30,29 @@ exports.createPost = async (req, res, next) => {
         const post = await postService.createPost({ user_id, start_date, end_date, is_live: true })
         res.json(post)
     } catch(err) {
+        next(err)
+    }
+}
+
+exports.getPostWithId = async(req,res,next) => {
+    try{
+        let post = await Post.findOne({
+            where : {
+                userId : req.params.id
+            }
+        })
+        if(!post){
+            res.status(404).json({
+                message : "not found"
+            })
+        }
+        else{
+            res.status(200).json({
+                data : await post.get()
+            })
+        }
+    }
+    catch(e){
         next(err)
     }
 }
