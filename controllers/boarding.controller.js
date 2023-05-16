@@ -6,7 +6,7 @@ const { createHosting, getRequest } = require("../services/boarding.service")
 exports.createBoardingRequest = async(req,res,next) => {
     try{
         let hosting = await createHosting(req.body);
-        await hosting.save();
+        // await hosting.save();
         res.status(200).json(await hosting.get())
     }
     catch(e) {

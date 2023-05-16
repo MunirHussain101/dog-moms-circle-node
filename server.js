@@ -118,7 +118,7 @@ ReviewComments.belongsTo(User, {as: 'review_comments', foreignKey: 'user_id', ta
 // sequelize.sync({force: true}).then(result => {
 sequelize.sync(). then(result => {
   console.log('SYNCED')
-  app.listen(3000, () => {
+  app.listen(8080, () => {
     console.log(`Server is running at`);
   });
 }).catch(err => console.log(err)) 

@@ -2,7 +2,7 @@ const Sequelize = require('sequelize')
 const sequelize = require('../utils/database')
 const User = require('./user')
 
-const Hosting = sequelize.define('user', {
+const Hosting = sequelize.define('hosting', {
     id: {
         type: Sequelize.INTEGER,
         autoIncrement: true,
@@ -28,7 +28,6 @@ const Hosting = sequelize.define('user', {
             model: User,
             key: 'id',
         }
-
     },
     is_accepted : {
         type : Sequelize.BOOLEAN,

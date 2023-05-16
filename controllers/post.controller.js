@@ -36,9 +36,9 @@ exports.createPost = async (req, res, next) => {
 
 exports.getPostWithId = async(req,res,next) => {
     try{
-        let post = await Post.findOne({
+        let post =  await Post.findOne({
             where : {
-                userId : req.params.id
+                id : +req.params.id
             }
         })
         if(!post){

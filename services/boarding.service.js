@@ -1,9 +1,18 @@
 const Hosting = require("../models/hosting");
 
  const createHosting = async(body) => {
-    const {dated,start_date,end_date,hosted_user_id, is_accepted, host_user_id,createdAt, updatedAt} = body;
+    const {dated,start_date,end_date,hosted_user_id, host_user_id,} = body;
 
-    const hosting = new Hosting(dated,start_date,end_date,hosted_user_id,is_accepted,host_user_id,createdAt,updatedAt)
+    const hosting = await Hosting.create({
+        dated: new Date(),
+        start_date: new Date(),
+        end_date: new Date(),
+        hosted_user_id: 2,
+        is_accepted: false,
+        host_user_id: 1,
+        createdAt: new Date(),
+        updatedAt: new Date()
+    })
     return  hosting;
 }
 
