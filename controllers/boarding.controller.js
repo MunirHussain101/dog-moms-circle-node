@@ -6,6 +6,11 @@ const { createHosting, getRequest } = require("../services/boarding.service")
 exports.createBoardingRequest = async(req,res,next) => {
     try{
         let hosting = await createHosting(req.body);
+        if(!hosting){
+            res.status(404).json({
+                message : "Error"
+            })
+        }
         await hosting.save();
         res.status(200).json(await hosting.get())
     }
