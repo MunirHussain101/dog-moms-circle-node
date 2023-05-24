@@ -13,9 +13,4 @@ const Breed = sequelize.define('breed', {
         allowNull: false
     }
 })
-// Breed.associate = (models) => {
-//     console.log('inside')
-//     Breed.hasMany(models.Dog)
-// }
-// Breed.hasMany(Dog)
 module.exports = Breed

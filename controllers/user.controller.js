@@ -36,23 +36,23 @@ exports.getProfileData = async (req, res, next) => {
 
     const user = await User.findOne({
       where: {id},
-      include: [Role, Dog]
+      include: [Role, Dog],
     })
-    // let a = null;
-    // if(user) {
-    //   // user.dogs.forEach(yooooooo => {
-    //   //   console.log({yooooooo:yooooooo.dataValues})
-    //   // })
-    //   user.dogs = await Promise.all(user.dogs.map(async (dog) => {
-    //     console.log({"dog.dataValues breed":dog.dataValues.breedId})
-    //     const breed = await Breed.findOne({ where: { id: dog.dataValues.breedId } });
-    //     console.log({yooooooo:breed})
-    //     dog.breed = breed.name;
-    //     return dog;
-    //   }))
-    // }
-    // const breed = await Breed.findOne({where: {id: user.roles}})
-    res.json(user)
+    const cache = [];
+    const revised_user = JSON.parse(JSON.stringify(user, (key, value) => {
+      if(key === 'password') {
+        return undefined;
+      }
+      if (typeof value === 'object' && value !== null) {
+        if (cache.includes(value)) {
+          return '[Circular]';
+        }
+        cache.push(value);
+      }
+      return value;
+    }));
+
+    res.json(revised_user)
   } catch(err) {
     console.log(err)
     next(err)

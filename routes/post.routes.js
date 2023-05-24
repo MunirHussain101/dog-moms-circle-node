@@ -4,7 +4,5 @@ const Controller = require('../controllers/post.controller')
 
 router.post('/api/getPosts',  Controller.getPosts)
 router.post('/api/setPosts', Controller.createPost)
-// router.put('/api/posts/:id', Controller.updatePost)
-// router.delete('/api/posts/:id', Controller.deletePost)
-
+router.get('/api/post/:id', Controller.getPost)
 module.exports = router;

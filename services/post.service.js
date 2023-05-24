@@ -100,6 +100,11 @@ const getPosts = async({zip_code, willing_travel_distance, time_period, dog_pref
     return posts
 }
 
+const getPost = async(id) => {
+    const post = await Post.findOne(id)
+    return post
+}
+
 const createPost = async({user_id, start_date, end_date, is_live}) => {
     const userConditon = {
     }
@@ -149,5 +154,6 @@ const createPost = async({user_id, start_date, end_date, is_live}) => {
 
 module.exports = {
     getPosts,
-    createPost
+    getPost,
+    createPost,
 }

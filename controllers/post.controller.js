@@ -14,6 +14,15 @@ exports.getPosts = async (req, res, next) => {
         next(err)
     }
 }
+exports.getPost = async (req, res, next) => {
+    try {
+        const {id} = req.query
+        const post = await postService.getPost(id)
+        res.json(post)
+    } catch(err) {
+        next(err)
+    }
+}
 
 exports.createPost = async (req, res, next) => {
     try {
@@ -33,12 +42,3 @@ exports.createPost = async (req, res, next) => {
         next(err)
     }
 }
-
-// exports.getPosts = async(req, res, next) => {
-//     try {
-//       const res = await postService.getPosts()
-//       res.json(res)
-//     } catch(err) {
-//       next(err)
-//     }
-// }

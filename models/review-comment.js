@@ -8,22 +8,6 @@ const ReviewComment = sequelize.define('review_comment', {
         allowNull: false,
         primaryKey: true
     },
-    // review_id: {
-    //     type: Sequelize.INTEGER,
-    //     allowNull: false,
-    //     references: {
-    //         model: 'reviews',
-    //         key: 'id'
-    //     }
-    // },
-    // user_id: {
-    //     type: Sequelize.INTEGER,
-    //     allowNull: false,
-    //     references: {
-    //         model: 'users',
-    //         key: 'id'
-    //     }
-    // },
     comment: {
         type: Sequelize.STRING,
         allowNull: false

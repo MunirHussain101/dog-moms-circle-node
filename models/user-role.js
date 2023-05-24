@@ -28,5 +28,4 @@ const UserRole = sequelize.define("user_role", {
         type: Sequelize.DATE,
     }
 })
-// UserRole.sync()
 module.exports = UserRole
