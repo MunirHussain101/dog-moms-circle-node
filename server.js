@@ -50,10 +50,12 @@ const authRoutes = require('./routes/auth.routes');
 const userRoutes = require('./routes/user.routes');
 const postRoutes = require('./routes/post.routes');
 const reviewRoutes = require('./routes/review.routes')
+const boardingRoutes = require('./routes/boarding.routes')
 app.use(authRoutes)
 app.use(userRoutes)
 app.use(postRoutes)
 app.use(reviewRoutes)
+app.use(boardingRoutes)
 
 app.get("/", (req, res) => {
   console.log('api hit')

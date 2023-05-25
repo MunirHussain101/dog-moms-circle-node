@@ -1,8 +1,4 @@
 const express = require('express')
-const UserRoles = require('../models/user-role')
-
-const { verifySignUp } = require("../middlerware")
-
 const  authController = require("../controllers/auth.controller");
 
 const router = express.Router();

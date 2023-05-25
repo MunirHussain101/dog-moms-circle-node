@@ -10,7 +10,11 @@ exports.setCurrentUser = async (req, res, next) => {
     if(token) {
         try {
             const {id} = await jwt.verify(token, config.secret)
-            const user = await User.findOne({id})
+            const user = await User.findOne({
+                where: {
+                    id: id
+                }
+            })
             req.user = user
         } catch(err) {
             next(err)
