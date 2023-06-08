@@ -1,0 +1,1 @@
+exports.POINTS = +process.env.POINTS

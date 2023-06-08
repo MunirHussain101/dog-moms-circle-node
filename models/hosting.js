@@ -2,7 +2,7 @@ const Sequelize = require('sequelize')
 const sequelize = require('../utils/database')
 const User = require('./user')
 
-const Hosting = sequelize.define('user', {
+const Hosting = sequelize.define('hosting', {
     id: {
         type: Sequelize.INTEGER,
         autoIncrement: true,
@@ -11,7 +11,8 @@ const Hosting = sequelize.define('user', {
     },
     dated: {
         type: Sequelize.DATE,
-        allowNull: false
+        allowNull: false,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
     },
     start_date: {
         type: Sequelize.DATE,
@@ -19,7 +20,13 @@ const Hosting = sequelize.define('user', {
     },
     is_accepted: {
         type: Sequelize.BOOLEAN,
-        defaultValue: false
+        defaultValue: false,
+        allowNull: false,
+    },
+    is_rejected: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
+        allowNull: false,
     },
     end_date: {
         type: Sequelize.DATE,
@@ -44,7 +51,8 @@ const Hosting = sequelize.define('user', {
     },
     createdAt: {
         type: Sequelize.DATE,
-        allowNull: false
+        allowNull: false,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
     },
     updatedAt: {
         type: Sequelize.DATE,

@@ -92,11 +92,13 @@ Breed.hasMany(Dog)
 User.hasMany(Dog)
 Dog.belongsTo(User)
 
-Hosting.belongsTo(User, {as: 'hostedUser', foreignKey: 'hosted_user_id'})
-Hosting.belongsTo(User, {as: 'hostingUser', foreignKey: 'host_user_id'})
-User.hasMany(Hosting)
+User.hasMany(Hosting, { foreignKey: 'host_user_id' });
+User.hasMany(Hosting, { foreignKey: 'hosted_user_id' });
+Hosting.belongsTo(User, { foreignKey: 'host_user_id' });
+Hosting.belongsTo(User, { foreignKey: 'hosted_user_id' });
 
-
+// this may cause some problems, we may need another hasMany
+// like we do in the above association
 Review.belongsTo(User, {as: 'reviewUser', foreignKey: 'source_id'})
 Review.belongsTo(User, {as: 'reviewedUser', foreignKey: 'target_id'})
 User.hasMany(Review, {as: 'reviews', foreignKey: 'target_id'})

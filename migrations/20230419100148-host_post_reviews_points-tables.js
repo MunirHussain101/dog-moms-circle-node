@@ -14,7 +14,8 @@ module.exports = {
       },
       dated: {
         type: Sequelize.DATE,
-        allowNull: false
+        allowNull: false,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
       },
       start_date: {
         type: Sequelize.DATE,
@@ -26,7 +27,13 @@ module.exports = {
       },
       is_accepted: {
         type: Sequelize.BOOLEAN,
-        defaultValue: false
+        defaultValue: false,
+        allowNull: false
+      },
+      is_rejected: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
+        allowNull: false
       },
       hosted_user_id: {
         type: Sequelize.INTEGER,
@@ -46,11 +53,12 @@ module.exports = {
       },
       createdAt: {
         type: Sequelize.DATE,
-        allowNull: false
+        allowNull: false,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
       },
       updatedAt: {
         type: Sequelize.DATE,
-        allowNull: false
+        allowNull: false,
       },
       deletedAt: {
         type: Sequelize.DATE,

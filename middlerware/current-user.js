@@ -9,7 +9,7 @@ exports.setCurrentUser = async (req, res, next) => {
     // if(!token) throw new Error('Token not defined in header')
     if(token) {
         try {
-            const {id} = await jwt.verify(token, config.secret)
+            const {id} = jwt.verify(token, config.secret)
             const user = await User.findOne({
                 where: {
                     id: id
