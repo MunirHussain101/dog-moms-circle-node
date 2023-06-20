@@ -3,8 +3,6 @@ require("dotenv").config();
 const cors = require("cors");
 const multer = require('multer')
 const path = require('path')
-const socketIO = require("socket.io");
-const http = require("http");
 
 const ApiError = require("./helpers/ApiError");
 const sequelize = require('./utils/database');
@@ -64,7 +62,7 @@ app.get("/", (req, res) => {
 
 app.use((err, req, res, next) => {
   res
-    .status(500)
+    .status(err.status)
     .json({
       message: err.message,
       status: err.status,
@@ -92,10 +90,10 @@ Breed.hasMany(Dog)
 User.hasMany(Dog)
 Dog.belongsTo(User)
 
-User.hasMany(Hosting, { foreignKey: 'host_user_id' });
-User.hasMany(Hosting, { foreignKey: 'hosted_user_id' });
-Hosting.belongsTo(User, { foreignKey: 'host_user_id' });
-Hosting.belongsTo(User, { foreignKey: 'hosted_user_id' });
+User.hasMany(Hosting, { foreignKey: 'host_user_id', as: 'hostUser' });
+User.hasMany(Hosting, { foreignKey: 'hosted_user_id', as: 'hostedUser' });
+Hosting.belongsTo(User, { foreignKey: 'host_user_id', as: 'hostUser' });
+Hosting.belongsTo(User, { foreignKey: 'hosted_user_id', as: 'hostedUser' });
 
 // this may cause some problems, we may need another hasMany
 // like we do in the above association
@@ -120,6 +118,7 @@ ReviewComments.belongsTo(Review, {as: 'comments', foreignKey: 'review_id', targe
 User.hasMany(ReviewComments, {foreignKey: 'user_id'})
 ReviewComments.belongsTo(User, {as: 'review_comments', foreignKey: 'user_id', targetKey: 'id' })
 
+// const clients = {}
 // sequelize.sync({force: true}).then(result => {
 sequelize.sync().then(result => {
   console.log('SYNCED')
@@ -131,5 +130,15 @@ sequelize.sync().then(result => {
   io.init(server)
   io.getIO().on('connection', socket => {
     console.log('client connected')
+    socket.on('storeId', (id) => {
+      console.log('-------------> id saved !');
+      console.log({id});
+      io.getClients()[id] = socket.id
+      console.log(io.getClients()[id]);
+      // console.log(id);
+    })
+    // socket.on('storeId', data => {
+    //   io.getClients()[data.id] = socket.id
+    // })
   })
 }).catch(err => console.log(err))

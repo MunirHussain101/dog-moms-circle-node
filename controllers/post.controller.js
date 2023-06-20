@@ -39,6 +39,18 @@ exports.createPost = async (req, res, next) => {
         const post = await postService.createPost({ user_id, start_date, end_date, is_live: true })
         res.json(post)
     } catch(err) {
+        console.log('error happend bro')
         next(err)
+    }
+}
+
+exports.isUserInfoComplete = async (req, res, next) => {
+    const {id} = req.params
+    try {
+        await postService.checkData(id)
+        res.json(true)
+    } catch(err) {
+        console.log({err});
+        res.json(false)
     }
 }

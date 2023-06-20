@@ -1,5 +1,5 @@
 let io;
-
+const clients = {}
 module.exports = {
     init: httpServer => {
         const socketIO = require('socket.io');
@@ -16,5 +16,6 @@ module.exports = {
             throw new Error('Socket.io not initialized')
         }
         return io;
-    }
+    },
+    getClients: () => clients
 }

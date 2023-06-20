@@ -12,4 +12,14 @@ router.post(
     boardingController.updateBoardingStatus
 )
 
+router.post(
+    '/api/bookings',
+    boardingController.getBookings
+)
+
+router.post(
+    '/api/get_boarding',
+    boardingController.checkBoarding
+)
+
 module.exports = router

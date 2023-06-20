@@ -20,21 +20,29 @@ exports.signup = async (req, res, next) => {
   // Save User to Database
   const transaction = await sequelize.transaction();
   try {
+    const {firstname, lastname, email, password, phone, tc_accepted} = req.body
+    if(!firstname) throw new ApiError(400, 'firstname not defined')
+    if(!lastname) throw new ApiError(400, 'lastname not defined')
+    if(!email) throw new ApiError(400, 'email not defined')
+    if(!password) throw new ApiError(400, 'password not defined')
+    if(!phone) throw new ApiError(400, 'phone not defined')
+    if(!tc_accepted) throw new ApiError(400, 'please accept terms and condition')
+
     const userExists = await User.findOne({where: {email: req.body.email}})
     if (userExists) {
       throw new ApiError(404, "Email already exists");
     }
-    const password = await bcrypt.hash(req.body.password, 10);
+    const hashPassword = await bcrypt.hash(req.body.password, 10);
     const role = await Role.findOne({name: 'user'})
     const user = await User.create(
       {
         firstname: req.body.firstname,
         lastname: req.body.lastname,
         email: req.body.email,
-        password,
+        password: hashPassword,
         phone: req.body.phone,
         roleId: role.id,
-        tc_accepted: req.body.tc_accepted || false,
+        tc_accepted: req.body.tc_accepted,
         is_verified: true
       },
       { transaction }
