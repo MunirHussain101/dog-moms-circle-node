@@ -15,11 +15,12 @@ exports.board = async (req, res, next) => {
 
 exports.updateBoardingStatus = async (req, res, next) => {
   try {
-    const { id, action, myId, side } = req.body
+    const { id, action, myId, side, notification_id } = req.body
     if(!id) throw new ApiError(404, 'Please specify a boarding id.')
     if(!myId) throw new ApiError(404, 'No User found with given id.')
+    if(!notification_id) throw new ApiError(404, 'Please specify notification id.')
     if(action !== true && action !== false) throw new ApiError(400, 'action should be either true or false.')
-    const data = await boardingService.updateBoardingStatus(id, action, myId, side)
+    const data = await boardingService.updateBoardingStatus(id, action, myId, side, notification_id)
     res.json(data)
   } catch(err) {
     next(err)

@@ -39,7 +39,6 @@ const Hosting = sequelize.define('hosting', {
             model: User,
             key: 'id',
         }
-
     },
     host_user_id: {
         type: Sequelize.INTEGER,

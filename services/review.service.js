@@ -1,8 +1,5 @@
-const Point = require("../models/point")
-const Post = require("../models/post")
 const Review = require("../models/review")
 const ReviewComments = require("../models/review-comment")
-const User = require("../models/user")
 
 const setReviewComments = async(review_id, comment, user_id) => {
     
@@ -18,6 +15,16 @@ const setReviewComments = async(review_id, comment, user_id) => {
     return reviewComment
 }
 
+const getReviews = async(userId) => {
+    const reviews = await Review.findAll({
+        where: {
+            target_id: userId
+        }
+    })
+    return reviews
+}
+
 module.exports = {
-    setReviewComments
+    setReviewComments,
+    getReviews
 }

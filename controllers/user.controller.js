@@ -6,7 +6,9 @@ const Dog = require('../models/dog');
 const Breed = require('../models/breed');
 
 const postService = require('../services/post.service');
-const userService = require('../services/user.service')
+const userService = require('../services/user.service');
+const ApiError = require('../helpers/ApiError');
+const Review = require('../models/review');
 
 exports.allAccess = async (req, res, next) => {
     try {    // Find all users
@@ -38,6 +40,22 @@ exports.getProfileData = async (req, res, next) => {
       where: {id},
       include: [Role, Dog],
     })
+    const reviews = await Review.findAll({
+      where: {
+        target_id: user.id,
+        is_live: true,
+        deletedAt: null
+      },
+      include: [
+        {
+          model: User,
+          as: 'reviewUser',
+          attributes: ['id','firstname', 'lastname']
+        }
+      ],
+      limit: 5,
+      order: [['createdAt', 'DESC']]
+    })
     const cache = [];
     const revised_user = JSON.parse(JSON.stringify(user, (key, value) => {
       if(key === 'password') {
@@ -51,7 +69,7 @@ exports.getProfileData = async (req, res, next) => {
       }
       return value;
     }));
-
+    revised_user.reviews = reviews
     res.json(revised_user)
   } catch(err) {
     console.log(err)
@@ -78,6 +96,27 @@ exports.getBreeds = async(req, res, next) => {
   try {
     const breeds = await userService.getBreeds()
     res.json(breeds)
+  } catch(err) {
+    next(err)
+  }
+}
+
+exports.getNotifications = async (req, res, next) => {
+  try {
+    const { userId } = req.params
+    if(!userId) throw new ApiError(400, 'userId not defined')
+    const notifications = await userService.getNotifications(userId)
+    res.json(notifications)
+  } catch(err) {
+    next(err)
+  }
+}
+
+exports.readAllNotifications = async (req, res, next) => {
+  try {
+    const {userId} = req.query
+    const response = await userService.readAllNotifications(userId)
+    res.json(true)
   } catch(err) {
     next(err)
   }

@@ -118,8 +118,15 @@ module.exports = {
       {name: 'Pyrenean Shepherd', createdAt: new Date(), updatedAt: new Date()},
       {name: 'Skye Terrier', createdAt: new Date(), updatedAt: new Date()},
     ])
-
-   await queryInterface.bulkInsert('roles', [{name: 'user', createdAt: new Date(),updatedAt: new Date()}])
+    await queryInterface.bulkInsert('roles', [{name: 'user', createdAt: new Date(),updatedAt: new Date()}])
+    await queryInterface.bulkInsert('notification_types', [
+      {name: 'review'},
+      {name: 'rating'},
+      {name: 'comment'},
+      {name: 'request'},
+      {name: 'accept-request'},
+      {name: 'reject-request'},
+    ])
   },
 
   async down (queryInterface, Sequelize) {

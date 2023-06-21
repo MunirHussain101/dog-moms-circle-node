@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize')
 const Breed = require('../models/breed')
+const Notification = require('../models/notification')
 const Point = require('../models/point')
 const Review = require('../models/review')
 const User = require('../models/user')
@@ -122,8 +123,28 @@ const getBreeds = async() => {
     return breedNames;
 }
 
+const getNotifications = async (userId) => {
+    const notifications = await Notification.findAll({
+        where: {
+            userId: +userId,
+            is_read: false
+        }
+    })
+    return notifications
+    // return 'abc'
+}
+
+const readAllNotifications = async (userId) => {
+    await Notification.update(
+        {is_read: true},
+        {where: { userId }}
+    )
+}
+
 module.exports = {
     setReview,
     getBreeds,
-    getUsers
+    getUsers,
+    getNotifications,
+    readAllNotifications
 }

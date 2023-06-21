@@ -7,13 +7,23 @@ const io = require('../socket')
 const User = require("../models/user")
 const Post = require("../models/post")
 const { Op, Sequelize } = require("sequelize")
+const Notification = require("../models/notification")
+const NotificationType = require("../models/notification-type")
+const { ACCEPT_REQUEST } = require("../utils/enums")
 
-const updateBoardingStatus = async(boardingId, action, myId, side) => {
+const updateBoardingStatus = async(boardingId, action, myId, side, notification_id) => {
     let transaction = await sequelize.transaction()
 
     const boarding = await Hosting.findByPk(boardingId, { transaction })
     if(!boarding) throw new ApiError(404, 'Boarding not found.')
-
+    await Notification.update(
+        {is_read: true},
+        {where: {
+            id: notification_id
+        },
+            transaction
+        }
+    )
     if(action === false) {
         boarding.is_rejected = !action
         boarding.is_accepted = action
@@ -87,6 +97,17 @@ const updateBoardingStatus = async(boardingId, action, myId, side) => {
             const congrats_msg2 = side
             ? `CONGRATULATIONS! YOU HAVE EARNED 10 POINTS FOR HOSTING ${myData.firstname} ${myData.lastname}`
             : `CONGRATULATIONS! YOUR DOG WILL BE HOSTED BY ${myData.firstname} ${myData.lastname} FOR 10 POINTS`
+        const type = await NotificationType.findOne({
+            where: {
+                name: ACCEPT_REQUEST
+            }
+        })
+        const notification = await Notification.create({
+            userId: idToSendEvent,
+            typeId: type.id,
+            message: `${myData.firstname} ${myData.lastname} accepted your request`,
+            
+        })
         io.getIO().to(targetSocketId).emit('accept-request', {
             user: myData,
             type: 3,
@@ -124,17 +145,26 @@ const requestBoarding = async(id, target_id) => {
         })
         if(!user) throw new ApiError(404, 'No user with this ID is found.')
         const targetSocketId = io.getClients()[target_id]
-        console.log({targetSocketId});
         if(targetSocketId) {
-            const notificationId = Date.now()+''
+            // const notificationId = Date.now()+''
+            const type = await NotificationType.findOne({
+                where: {name: 'request'}
+            })
+            const notification = await Notification.create({
+                userId: target_id,
+                typeId: type.id,
+                message: `${user.firstname} ${user.lastname} sent you a request`,
+                is_read: false,
+                boardingId: hosting.id
+            })
+            // console.log({notification});
             io.getIO().to(targetSocketId).emit('request', {
-                id: targetSocketId,
+                id: notification.id,
                 message: `${user.firstname} ${user.lastname} sent you a request`,
                 user,
                 hosting,
                 boardingId: hosting.id,
-                type: 4,
-                notificationId
+                typeId: type.id,
             })
         }
     }

@@ -61,8 +61,9 @@ app.get("/", (req, res) => {
 });
 
 app.use((err, req, res, next) => {
+  const status = err.status ? err.status : 500
   res
-    .status(err.status)
+    .status(status)
     .json({
       message: err.message,
       status: err.status,
@@ -81,6 +82,8 @@ const Review = require("./models/review");
 const Post = require('./models/post');
 const Point = require("./models/point");
 const ReviewComments = require("./models/review-comment");
+const Notification = require("./models/notification");
+const NotificationType = require("./models/notification-type");
 
 User.belongsToMany(Role, {through: UserRole})
 Role.belongsToMany(User, {through: UserRole})
@@ -109,20 +112,43 @@ Post.belongsTo(User)
 User.hasOne(Point)
 Point.belongsTo(User)
 
-// Post.hasMany(Review)
-// Post.belongsTo(User)
-// Post.hasOne(User)
 
 Review.hasMany(ReviewComments, {foreignKey: 'review_id'})
 ReviewComments.belongsTo(Review, {as: 'comments', foreignKey: 'review_id', targetKey: 'id'}) //
 User.hasMany(ReviewComments, {foreignKey: 'user_id'})
 ReviewComments.belongsTo(User, {as: 'review_comments', foreignKey: 'user_id', targetKey: 'id' })
 
+// Notification.hasOne(User)
+// User.hasMany(Notification)
+
+User.hasMany(Notification, { foreignKey: 'userId' });
+Notification.belongsTo(User, { foreignKey: 'userId' });
+
+
+
+
+NotificationType.hasMany(Notification, {
+  foreignKey: 'typeId'
+});
+Notification.belongsTo(NotificationType, {
+  foreignKey: 'typeId'
+});
+
+Hosting.hasOne(Notification, {
+  foreignKey: 'boardingId',
+})
+Notification.belongsTo(Hosting, {
+  foreignKey: 'boardingId'
+})
+
+// Notification.hasOne(NotificationType)
+// Notification.belongsToMany(Notification, {through: })
+
 // const clients = {}
 // sequelize.sync({force: true}).then(result => {
 sequelize.sync().then(result => {
   console.log('SYNCED')
-  
+
   const server = app.listen(process.env.PORT, () => {
     console.log(`Server is running at ${process.env.PORT}`);
   });
